@@ -33,6 +33,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ComponentFactory.Krypton.Docking">
+      <HintPath>..\..\..\..\Downloads\Compressed\Krypton-master\Krypton-master\Bin\ComponentFactory.Krypton.Docking.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Navigator">
+      <HintPath>..\..\..\..\Downloads\Compressed\Krypton-master\Krypton-master\Bin\ComponentFactory.Krypton.Navigator.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Ribbon">
+      <HintPath>..\..\..\..\Downloads\Compressed\Krypton-master\Krypton-master\Bin\ComponentFactory.Krypton.Ribbon.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Toolkit">
+      <HintPath>..\..\..\..\Downloads\Compressed\Krypton-master\Krypton-master\Bin\ComponentFactory.Krypton.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="ComponentFactory.Krypton.Workspace">
+      <HintPath>..\..\..\..\Downloads\Compressed\Krypton-master\Krypton-master\Bin\ComponentFactory.Krypton.Workspace.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -54,6 +69,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
