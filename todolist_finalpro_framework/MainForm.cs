@@ -56,8 +56,8 @@ namespace todolist_finalpro_framework
             // *取得所有todo，没有条件限制
             //List<ToDoModel> getCurrent =  my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { }); 
 
-            // *有条件的todo, 可以多重
-            Dictionary<string, object> cond = new Dictionary<string, object> { };
+            // *有条件的取得todo, 可以多重
+            //Dictionary<string, object> cond = new Dictionary<string, object> { };
 
             // 根据done status
             //cond.Add("Done", 0);
@@ -66,19 +66,19 @@ namespace todolist_finalpro_framework
             //cond.Add("CategoryID", catogeries_id["Other"]);
 
             //根据开始时间段（可以都是同一天或指定的时间段）
-            cond.Add("StartDate", new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now.AddDays(-1) });
+            //cond.Add("StartDate", new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now.AddDays(-1) });
 
             //根据预定结束时间段（可以都是同一天或指定的时间段）
             //cond.Add("EndDate", new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(25) });
 
 
-            List<ToDoModel> getCurrent = my_db.QueryToDo(sqlite_conn, cond);
+            //List<ToDoModel> getCurrent = my_db.QueryToDo(sqlite_conn, cond);
             //Debug.WriteLine(getCurrent.Count);
-            foreach (ToDoModel todo in getCurrent)
-            {
-                Debug.WriteLine($"id: {todo.ID}, Desc: {todo.Description}, Category: {categories[todo.Category-1]}, Start: {todo.Start.ToShortDateString()}, " +
-                                $"End: {todo.End.ToShortDateString()}, Done: {todo.Done}\n");
-            }
+            //foreach (ToDoModel todo in getCurrent)
+            //{
+            //    Debug.WriteLine($"id: {todo.ID}, Desc: {todo.Description}, Category: {categories[todo.Category-1]}, Start: {todo.Start.ToShortDateString()}, " +
+            //                    $"End: {todo.End.ToShortDateString()}, Done: {todo.Done}\n");
+            //}
 
             // *更新原本的todo
             //Dictionary<string, object> update_cond = new Dictionary<string, object> { };
