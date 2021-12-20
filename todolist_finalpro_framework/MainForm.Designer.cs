@@ -30,9 +30,9 @@ namespace todolist_finalpro_framework
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.formPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.monthCalendar = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.gridToDo = new System.Windows.Forms.DataGridView();
@@ -191,14 +191,14 @@ namespace todolist_finalpro_framework
             // 
             // monthCalendar
             // 
-            this.monthCalendar.Location = new System.Drawing.Point(29, 32);
+            this.monthCalendar.Location = new System.Drawing.Point(26, 26);
             this.monthCalendar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.Palette = this.formPalette;
             this.monthCalendar.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
             this.monthCalendar.SelectionEnd = new System.DateTime(2021, 12, 19, 0, 0, 0, 0);
             this.monthCalendar.SelectionStart = new System.DateTime(2021, 12, 19, 0, 0, 0, 0);
-            this.monthCalendar.Size = new System.Drawing.Size(349, 265);
+            this.monthCalendar.Size = new System.Drawing.Size(293, 220);
             this.monthCalendar.TabIndex = 0;
             this.monthCalendar.TodayDate = new System.DateTime(2021, 12, 19, 0, 0, 0, 0);
             this.monthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateChanged);
@@ -213,14 +213,14 @@ namespace todolist_finalpro_framework
             this.gridToDo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.gridToDo.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.gridToDo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridToDo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridToDo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gridToDo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridToDo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.columnDone,
@@ -230,40 +230,43 @@ namespace todolist_finalpro_framework
             this.columnEndDate,
             this.columnStatus,
             this.columnID});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gridToDo.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gridToDo.DefaultCellStyle = dataGridViewCellStyle2;
             this.gridToDo.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            this.gridToDo.Location = new System.Drawing.Point(428, 158);
+            this.gridToDo.Location = new System.Drawing.Point(380, 126);
+            this.gridToDo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridToDo.Name = "gridToDo";
             this.gridToDo.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridToDo.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridToDo.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.gridToDo.RowHeadersVisible = false;
             this.gridToDo.RowHeadersWidth = 62;
             this.gridToDo.RowTemplate.Height = 28;
             this.gridToDo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.gridToDo.Size = new System.Drawing.Size(1249, 504);
+            this.gridToDo.Size = new System.Drawing.Size(1110, 403);
             this.gridToDo.TabIndex = 1;
+            this.gridToDo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridToDo_CellEndEdit);
             // 
             // btnAddNew
             // 
-            this.btnAddNew.Location = new System.Drawing.Point(1119, 89);
+            this.btnAddNew.Location = new System.Drawing.Point(995, 71);
+            this.btnAddNew.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAddNew.Name = "btnAddNew";
             this.btnAddNew.Palette = this.formPalette;
             this.btnAddNew.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.btnAddNew.Size = new System.Drawing.Size(191, 43);
+            this.btnAddNew.Size = new System.Drawing.Size(170, 34);
             this.btnAddNew.TabIndex = 2;
             this.btnAddNew.TabStop = false;
             this.btnAddNew.Values.Text = "Add Task";
@@ -272,7 +275,8 @@ namespace todolist_finalpro_framework
             // grpAddTask
             // 
             this.grpAddTask.CaptionVisible = false;
-            this.grpAddTask.Location = new System.Drawing.Point(393, 788);
+            this.grpAddTask.Location = new System.Drawing.Point(349, 630);
+            this.grpAddTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.grpAddTask.Name = "grpAddTask";
             this.grpAddTask.Palette = this.formPalette;
             this.grpAddTask.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
@@ -288,7 +292,7 @@ namespace todolist_finalpro_framework
             this.grpAddTask.Panel.Controls.Add(this.datePickerEnd);
             this.grpAddTask.Panel.Controls.Add(this.datePickerStart);
             this.grpAddTask.Panel.Controls.Add(this.txtAddTask);
-            this.grpAddTask.Size = new System.Drawing.Size(1136, 119);
+            this.grpAddTask.Size = new System.Drawing.Size(1010, 95);
             this.grpAddTask.TabIndex = 4;
             // 
             // label4
@@ -296,9 +300,9 @@ namespace todolist_finalpro_framework
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.label4.ForeColor = System.Drawing.Color.White;
-            this.label4.Location = new System.Drawing.Point(11, 22);
+            this.label4.Location = new System.Drawing.Point(10, 18);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(109, 25);
+            this.label4.Size = new System.Drawing.Size(95, 20);
             this.label4.TabIndex = 9;
             this.label4.Text = "Description";
             // 
@@ -307,9 +311,9 @@ namespace todolist_finalpro_framework
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(296, 22);
+            this.label3.Location = new System.Drawing.Point(263, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(92, 25);
+            this.label3.Size = new System.Drawing.Size(76, 20);
             this.label3.TabIndex = 8;
             this.label3.Text = "Category";
             // 
@@ -318,9 +322,9 @@ namespace todolist_finalpro_framework
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(733, 22);
+            this.label2.Location = new System.Drawing.Point(652, 18);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(93, 25);
+            this.label2.Size = new System.Drawing.Size(79, 20);
             this.label2.TabIndex = 7;
             this.label2.Text = "End Date";
             // 
@@ -329,27 +333,29 @@ namespace todolist_finalpro_framework
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(471, 22);
+            this.label1.Location = new System.Drawing.Point(419, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 25);
+            this.label1.Size = new System.Drawing.Size(86, 20);
             this.label1.TabIndex = 6;
             this.label1.Text = "Start Date";
             // 
             // comboAddTask
             // 
             this.comboAddTask.DropDownWidth = 158;
-            this.comboAddTask.Location = new System.Drawing.Point(301, 59);
+            this.comboAddTask.Location = new System.Drawing.Point(268, 47);
+            this.comboAddTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboAddTask.Name = "comboAddTask";
             this.comboAddTask.Palette = this.formPalette;
             this.comboAddTask.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.comboAddTask.Size = new System.Drawing.Size(158, 29);
+            this.comboAddTask.Size = new System.Drawing.Size(140, 25);
             this.comboAddTask.TabIndex = 5;
             // 
             // btnEnterTask
             // 
-            this.btnEnterTask.Location = new System.Drawing.Point(1019, 47);
+            this.btnEnterTask.Location = new System.Drawing.Point(906, 38);
+            this.btnEnterTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEnterTask.Name = "btnEnterTask";
-            this.btnEnterTask.Size = new System.Drawing.Size(98, 42);
+            this.btnEnterTask.Size = new System.Drawing.Size(87, 34);
             this.btnEnterTask.TabIndex = 5;
             this.btnEnterTask.Text = "Add";
             this.btnEnterTask.UseVisualStyleBackColor = true;
@@ -357,29 +363,32 @@ namespace todolist_finalpro_framework
             // 
             // datePickerEnd
             // 
-            this.datePickerEnd.Location = new System.Drawing.Point(738, 59);
+            this.datePickerEnd.Location = new System.Drawing.Point(656, 47);
+            this.datePickerEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datePickerEnd.Name = "datePickerEnd";
             this.datePickerEnd.Palette = this.formPalette;
             this.datePickerEnd.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.datePickerEnd.Size = new System.Drawing.Size(264, 30);
+            this.datePickerEnd.Size = new System.Drawing.Size(235, 25);
             this.datePickerEnd.TabIndex = 3;
             // 
             // datePickerStart
             // 
-            this.datePickerStart.Location = new System.Drawing.Point(476, 59);
+            this.datePickerStart.Location = new System.Drawing.Point(423, 47);
+            this.datePickerStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datePickerStart.Name = "datePickerStart";
             this.datePickerStart.Palette = this.formPalette;
             this.datePickerStart.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.datePickerStart.Size = new System.Drawing.Size(256, 30);
+            this.datePickerStart.Size = new System.Drawing.Size(228, 25);
             this.datePickerStart.TabIndex = 2;
             // 
             // txtAddTask
             // 
-            this.txtAddTask.Location = new System.Drawing.Point(16, 59);
+            this.txtAddTask.Location = new System.Drawing.Point(14, 47);
+            this.txtAddTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtAddTask.Name = "txtAddTask";
             this.txtAddTask.Palette = this.formPalette;
             this.txtAddTask.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.txtAddTask.Size = new System.Drawing.Size(269, 31);
+            this.txtAddTask.Size = new System.Drawing.Size(239, 27);
             this.txtAddTask.TabIndex = 0;
             // 
             // kryptonContextMenuHeading1
@@ -397,19 +406,21 @@ namespace todolist_finalpro_framework
             // comboCategory
             // 
             this.comboCategory.DropDownWidth = 244;
-            this.comboCategory.Location = new System.Drawing.Point(428, 89);
+            this.comboCategory.Location = new System.Drawing.Point(380, 71);
+            this.comboCategory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboCategory.Name = "comboCategory";
-            this.comboCategory.Size = new System.Drawing.Size(244, 29);
+            this.comboCategory.Size = new System.Drawing.Size(217, 25);
             this.comboCategory.TabIndex = 5;
             this.comboCategory.Text = "Choose Category";
             // 
             // btnCompleted
             // 
-            this.btnCompleted.Location = new System.Drawing.Point(1338, 89);
+            this.btnCompleted.Location = new System.Drawing.Point(1189, 71);
+            this.btnCompleted.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnCompleted.Name = "btnCompleted";
             this.btnCompleted.Palette = this.formPalette;
             this.btnCompleted.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.btnCompleted.Size = new System.Drawing.Size(191, 43);
+            this.btnCompleted.Size = new System.Drawing.Size(170, 34);
             this.btnCompleted.TabIndex = 6;
             this.btnCompleted.TabStop = false;
             this.btnCompleted.Values.Text = "Mark As Complete";
@@ -417,12 +428,12 @@ namespace todolist_finalpro_framework
             // 
             // columnDone
             // 
-            this.columnDone.FalseValue = "";
+            this.columnDone.FalseValue = "0";
             this.columnDone.HeaderText = "";
             this.columnDone.MinimumWidth = 8;
             this.columnDone.Name = "columnDone";
             this.columnDone.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.columnDone.TrueValue = "";
+            this.columnDone.TrueValue = "1";
             this.columnDone.Width = 150;
             // 
             // columnDescription
@@ -472,10 +483,10 @@ namespace todolist_finalpro_framework
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            this.ClientSize = new System.Drawing.Size(1815, 1003);
+            this.ClientSize = new System.Drawing.Size(1613, 802);
             this.Controls.Add(this.btnCompleted);
             this.Controls.Add(this.comboCategory);
             this.Controls.Add(this.grpAddTask);

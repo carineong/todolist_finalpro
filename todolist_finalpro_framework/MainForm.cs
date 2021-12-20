@@ -313,6 +313,38 @@ namespace todolist_finalpro_framework
                 
             }
         }
+
+        private void gridToDo_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            Debug.WriteLine("End Edit");
+            int col_ind = gridToDo.CurrentCell.ColumnIndex;
+            int row_ind = gridToDo.CurrentCell.RowIndex;
+            Debug.WriteLine($"{row_ind}, {col_ind}, {gridToDo[col_ind, row_ind].Value}");
+            int data_id = Convert.ToInt32(gridToDo[6, row_ind].Value);
+            var changes = gridToDo[col_ind,row_ind].Value;
+            Dictionary<string, object> cond = new Dictionary<string, object> { };
+
+            switch (col_ind)
+            {
+                case 0: //完成与否
+
+                    cond.Add("Done", Convert.ToInt32(changes));
+                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+            }
+
+        }
+
     }
     
 }
