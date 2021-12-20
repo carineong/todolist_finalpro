@@ -327,7 +327,6 @@ namespace todolist_finalpro_framework
             switch (col_ind)
             {
                 case 0: //完成与否
-
                     cond.Add("Done", Convert.ToInt32(changes));
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     break;
