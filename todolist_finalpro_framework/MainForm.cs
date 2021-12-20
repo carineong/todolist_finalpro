@@ -21,7 +21,6 @@ namespace todolist_finalpro_framework
         public string[] categories = { "Personal", "Study", "Work", "Errands", "Other" };
         public Dictionary<string, int> categories_id;
         List<ToDoModel> getCurrent;
-        int showAllFlag = 1;
         int addNewFlag = 0;
         public MainForm()
         {
@@ -59,17 +58,89 @@ namespace todolist_finalpro_framework
                 {
                     gridToDo.Rows.Add();
                     gridToDo.AutoGenerateColumns = true;
-                    gridToDo.Rows[counter].Cells[0].Value = todo.Description; // first cell
-                    gridToDo.Rows[counter].Cells[1].Value = categories[todo.Category - 1]; // second cell
-                    gridToDo.Rows[counter].Cells[2].Value = todo.Start.ToShortDateString();
-                    gridToDo.Rows[counter].Cells[3].Value = todo.End.ToShortDateString();
+                    gridToDo.Rows[counter].Cells[1].Value = todo.Description; // first cell
+                    gridToDo.Rows[counter].Cells[2].Value = categories[todo.Category - 1]; // second cell
+                    gridToDo.Rows[counter].Cells[3].Value = todo.Start.ToShortDateString();
+                    gridToDo.Rows[counter].Cells[4].Value = todo.End.ToShortDateString();
+                    gridToDo.Rows[counter].Cells[6].Value = todo.ID;
+
                     if (todo.Done == 1)
                     {
-                        gridToDo.Rows[0].Cells[4].Value = true;
+                        gridToDo.Rows[counter].Cells[0].Value = true;
+                        gridToDo.Rows[counter].Cells[5].Value = "Complete";
                     }
                     else
                     {
-                        gridToDo.Rows[0].Cells[4].Value = false;
+                        gridToDo.Rows[counter].Cells[0].Value = false;
+                        gridToDo.Rows[counter].Cells[5].Value = "Pending";
+                    }
+                    counter++;
+                }
+            }
+        }
+        // 实现只展示一部分category的todo
+        private void showCategoryToDo(List<ToDoModel> getCurrent, string Category)
+        {
+
+            gridToDo.Rows.Clear();
+            gridToDo.Refresh();
+            getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+            int counter = 0;
+            if (Category == "All")
+            {
+                foreach (ToDoModel todo in getCurrent)
+                {
+
+                    //Debug.WriteLine($"id: {todo.ID}, Desc: {todo.Description}, Category: {categories[todo.Category-1]}, Start: {todo.Start.ToShortDateString()}, " +
+                    //                $"End: {todo.End.ToShortDateString()}, Done: {todo.Done}\n");
+                    if (selectedDateStart <= todo.Start && selectedDateEnd >= todo.Start)
+                    {
+                        gridToDo.Rows.Add();
+                        gridToDo.AutoGenerateColumns = true;
+                        gridToDo.Rows[counter].Cells[1].Value = todo.Description; // first cell
+                        gridToDo.Rows[counter].Cells[2].Value = categories[todo.Category - 1]; // second cell
+                        gridToDo.Rows[counter].Cells[3].Value = todo.Start.ToShortDateString();
+                        gridToDo.Rows[counter].Cells[4].Value = todo.End.ToShortDateString();
+                        gridToDo.Rows[counter].Cells[6].Value = todo.ID;
+
+                        if (todo.Done == 1)
+                        {
+                            gridToDo.Rows[counter].Cells[0].Value = true;
+                            gridToDo.Rows[counter].Cells[5].Value = "Complete";
+                        }
+                        else
+                        {
+                            gridToDo.Rows[counter].Cells[0].Value = false;
+                            gridToDo.Rows[counter].Cells[5].Value = "Pending";
+                        }
+                        counter++;
+                    }
+                }
+            }
+            foreach (ToDoModel todo in getCurrent)
+            {
+
+                //Debug.WriteLine($"id: {todo.ID}, Desc: {todo.Description}, Category: {categories[todo.Category-1]}, Start: {todo.Start.ToShortDateString()}, " +
+                //                $"End: {todo.End.ToShortDateString()}, Done: {todo.Done}\n");
+                if (selectedDateStart <= todo.Start && selectedDateEnd >= todo.Start && categories[todo.Category - 1] == Category)
+                {
+                    gridToDo.Rows.Add();
+                    gridToDo.AutoGenerateColumns = true;
+                    gridToDo.Rows[counter].Cells[1].Value = todo.Description; // first cell
+                    gridToDo.Rows[counter].Cells[2].Value = categories[todo.Category - 1]; // second cell
+                    gridToDo.Rows[counter].Cells[3].Value = todo.Start.ToShortDateString();
+                    gridToDo.Rows[counter].Cells[4].Value = todo.End.ToShortDateString();
+                    gridToDo.Rows[counter].Cells[6].Value = todo.ID;
+
+                    if (todo.Done == 1)
+                    {
+                        gridToDo.Rows[counter].Cells[0].Value = true;
+                        gridToDo.Rows[counter].Cells[5].Value = "Complete";
+                    }
+                    else
+                    {
+                        gridToDo.Rows[counter].Cells[0].Value = false;
+                        gridToDo.Rows[counter].Cells[5].Value = "Pending";
                     }
                     counter++;
                 }
@@ -87,14 +158,7 @@ namespace todolist_finalpro_framework
 
             categories_id = my_db.GetCategoryID(sqlite_conn);
 
-            // *增加todo操作
-            //ToDoModel new_todo = new ToDoModel();
-            //new_todo.Description = "Testing 1";
-            //new_todo.Category = categories_id["Personal"];
-            //new_todo.Start = DateTime.Now;
-            //new_todo.End = new_todo.Start.AddDays(5);
-            //new_todo.Done = 0;
-            //my_db.InsertNewToDo(sqlite_conn, new_todo);
+            
 
             // *取得所有todo，没有条件限制
             getCurrent =  my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
@@ -146,17 +210,20 @@ namespace todolist_finalpro_framework
                
                 gridToDo.Rows.Add();
                 gridToDo.AutoGenerateColumns = true;
-                gridToDo.Rows[counter].Cells[0].Value = todo.Description; // first cell
-                gridToDo.Rows[counter].Cells[1].Value = categories[todo.Category -1]; // second cell
-                gridToDo.Rows[counter].Cells[2].Value = todo.Start.ToShortDateString();
-                gridToDo.Rows[counter].Cells[3].Value = todo.End.ToShortDateString();
+                gridToDo.Rows[counter].Cells[1].Value = todo.Description; // first cell
+                gridToDo.Rows[counter].Cells[2].Value = categories[todo.Category -1]; // second cell
+                gridToDo.Rows[counter].Cells[3].Value = todo.Start.ToShortDateString();
+                gridToDo.Rows[counter].Cells[4].Value = todo.End.ToShortDateString();
+                gridToDo.Rows[counter].Cells[6].Value = todo.ID;
                 if (todo.Done == 1)
                 {
-                    gridToDo.Rows[0].Cells[4].Value = true;
+                    gridToDo.Rows[counter].Cells[0].Value = true;
+                    gridToDo.Rows[counter].Cells[5].Value = "Complete";
                 }
                 else
                 {
-                    gridToDo.Rows[0].Cells[4].Value = false;
+                    gridToDo.Rows[counter].Cells[0].Value = false;
+                    gridToDo.Rows[counter].Cells[5].Value = "Pending";
                 }
                 counter++;
                 
@@ -167,6 +234,8 @@ namespace todolist_finalpro_framework
                 comboAddTask.Items.Add(cat);
             }
             comboAddTask.Text = categories[0];
+
+
             
             
         }
@@ -206,8 +275,44 @@ namespace todolist_finalpro_framework
             getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
             showToDo(getCurrent);
         }
+        
+        // 所选择的都变成complete
+        private void btnCompleted_Click(object sender, EventArgs e)
+        {
+            //getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+            // *有条件的取得todo, 可以多重
+            Dictionary<string, object> cond = new Dictionary<string, object> { };
 
+            int rowid;
+            Dictionary<string, object> update_cond = new Dictionary<string, object> { };
+            foreach (DataGridViewRow grow in gridToDo.Rows)
+            {
+                rowid = Convert.ToInt32(grow.Cells[6].Value);
+                Debug.WriteLine(rowid.ToString());
+                cond.Add("id", rowid);
+                getCurrent = my_db.QueryToDo(sqlite_conn, cond);
+                Debug.WriteLine(getCurrent.Count);
+                
+                // 其实getCurrent应该只有一个ToDoModel
+                
+                foreach (ToDoModel todo in getCurrent)
+                {
+                    if (Convert.ToBoolean(grow.Cells[0].Value) == true)
+                    {
+                        update_cond.Add("Done", 1);
+                        grow.Cells[5].Value = "Complete";
 
+                    }
+                    else
+                    {
+                        update_cond.Add("Done", 0);
+                        grow.Cells[5].Value = "Pending";
+                    }
+                    my_db.UpdateToDo(sqlite_conn, update_cond, getCurrent[1].ID);
+                }
+                
+            }
+        }
     }
     
 }
