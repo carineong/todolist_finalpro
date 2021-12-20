@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\todolist_finalpro_framework"
   ],
-  "SelectedNode": "\\todolist_finalpro_framework.sln",
+  "SelectedNode": "\\todolist_finalpro_framework\\MainForm.cs",
   "PreviewInSolutionExplorer": false
 }
