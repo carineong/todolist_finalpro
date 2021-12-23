@@ -11,7 +11,6 @@ namespace todolist_finalpro_framework
 {
     public class Database
     {
-
         public SQLiteConnection CreateConnection(string db_name)
         {
 
@@ -29,7 +28,41 @@ namespace todolist_finalpro_framework
             }
             return sqlite_conn;
         }
-        
+
+        public bool CreateTable(SQLiteConnection conn)
+        {
+            string cmd = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'to_do'";
+            SQLiteDataReader result = QueryCmd(conn, cmd);
+            int RowCount = GetCount(conn, cmd);
+            if (RowCount > 0)
+            {
+
+                Debug.WriteLine($"{RowCount} Table Exists!");
+                //string Dropsql = $"DROP TABLE Category";
+                //ExecuteCommand(sqlite_cmd, Dropsql);
+                return false;
+            }
+            else
+            {
+                Debug.WriteLine("Table Not Found!");
+                string CreateTodo = $"CREATE TABLE to_do" +
+                    $"           (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    $"            Description TEXT NOT NULL," +
+                    $"            CategoryID INT NOT NULL, " +
+                    $"            StartDate TEXT NOT NULL, " +
+                    $"            EndDate TEXT, " +
+                    $"            Status INT NOT NULL," +
+                    $"            Profile INT NOT NULL)";
+                NonQueryCmd(conn, CreateTodo);
+
+                string CreateCategory = $"CREATE TABLE Category" +
+                            $"           (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                            $"            Type TEXT NOT NULL)";
+                NonQueryCmd(conn, CreateCategory);
+                return true;
+            }
+        }
+
         public void NonQueryCmd(SQLiteConnection conn, string cmd)
         {
             SQLiteCommand sqlite_cmd;
@@ -54,42 +87,7 @@ namespace todolist_finalpro_framework
             sqlite_cmd.CommandText = cmd;
             return Convert.ToInt32(sqlite_cmd.ExecuteScalar());
         }
-        public bool CreateTable(SQLiteConnection conn)
-        {
-            string cmd = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'to_do'";
-            SQLiteDataReader result = QueryCmd(conn, cmd);
-            int RowCount = GetCount(conn, cmd);
-            if (RowCount>0)
-            {
-
-                Debug.WriteLine($"{RowCount} Table Exists!");
-                //string Dropsql = $"DROP TABLE Category";
-                //ExecuteCommand(sqlite_cmd, Dropsql);
-
-
-                return false;
-            }
-            else
-            {
-                Debug.WriteLine("Table Not Found!");
-                string CreateTodo = $"CREATE TABLE to_do" +
-                    $"           (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                    $"            Description TEXT NOT NULL," +
-                    $"            CategoryID INT NOT NULL, " +
-                    $"            StartDate TEXT NOT NULL, " +
-                    $"            EndDate TEXT, " +
-                    $"            Done INT NOT NULL)";
-                NonQueryCmd(conn, CreateTodo);
-
-                string CreateCategory = $"CREATE TABLE Category" +
-                            $"           (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            $"            Type TEXT NOT NULL)";
-                NonQueryCmd(conn, CreateCategory);
-                return true;
-            }
-
-
-        }
+       
         public void InsertCategory(SQLiteConnection conn, string [] cat)
         {
             SQLiteCommand sqlite_cmd;
@@ -129,10 +127,10 @@ namespace todolist_finalpro_framework
         {
 
             string Insert_New = "INSERT INTO to_do " +
-                                "(Description, CategoryID, StartDate, EndDate, Done) " +
-                                $"VALUES ('{to_do.Description}', '{to_do.Category}', " +
-                                $"'{to_do.Start.ToString("yyyy-MM-dd")}', " +
-                                $"'{to_do.End.ToString("yyyy-MM-dd")}', '{to_do.Done}')";
+                                "(Description, CategoryID, StartDate, EndDate, Status, Profile) " +
+                                $"VALUES ('{to_do.desc}', '{to_do.category}', " +
+                                $"'{to_do.start.ToString("yyyy-MM-dd")}', " +
+                                $"'{to_do.end.ToString("yyyy-MM-dd")}', '{to_do.status}', '{to_do.profile}')";
 
             NonQueryCmd(conn, Insert_New);
 
@@ -152,16 +150,16 @@ namespace todolist_finalpro_framework
             List<ToDoModel> cur = new List<ToDoModel>();
         
             while (datareader.Read())
-            {
+            { 
                 ToDoModel tmp = new ToDoModel();
-                tmp.ID = Convert.ToInt32(datareader["id"]);
-                tmp.Description = Convert.ToString(datareader["Description"]);
-                tmp.Category = Convert.ToInt32(datareader["CategoryID"]);
+                tmp.id = Convert.ToInt32(datareader["id"]);
+                tmp.desc = Convert.ToString(datareader["Description"]);
+                tmp.category = Convert.ToInt32(datareader["CategoryID"]);
               
                
-                tmp.Start = DateTime.ParseExact(datareader["StartDate"].ToString(), "yyyy-MM-dd", null);
-                tmp.End = DateTime.ParseExact(datareader["EndDate"].ToString(), "yyyy-MM-dd", null);
-                tmp.Done = Convert.ToInt32(datareader["Done"]);
+                tmp.start = DateTime.ParseExact(datareader["StartDate"].ToString(), "yyyy-MM-dd", null);
+                tmp.end = DateTime.ParseExact(datareader["EndDate"].ToString(), "yyyy-MM-dd", null);
+                tmp.status = Convert.ToInt32(datareader["Status"]);
                 cur.Add(tmp);
             }
             datareader.Close();
@@ -185,15 +183,14 @@ namespace todolist_finalpro_framework
                 
                 switch (key)
                 {
-                    case "Done":
-                        if(cond_num >= 1)
+                    case "Profile":
+                        if (cond_num >= 1)
                         {
                             cmd += " AND";
                         }
                         cond_num++;
-                        cmd += $" Done = {(int)val}";
+                        cmd += $" Profile = {(int)val}";
                         break;
-
                     case "CategoryID":
                         if (cond_num >= 1)
                         {
@@ -219,6 +216,14 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         List<DateTime> end_dt = (List<DateTime>)val;
                         cmd += $" DATE(EndDate) >= '{end_dt[0].ToString("yyyy-MM-dd")}' AND  '{end_dt[1].ToString("yyyy-MM-dd")}'";
+                        break;
+                    case "Status":
+                        if (cond_num >= 1)
+                        {
+                            cmd += " AND";
+                        }
+                        cond_num++;
+                        cmd += $" Status = '{val}'";
                         break;
                 }
             }
@@ -246,13 +251,13 @@ namespace todolist_finalpro_framework
                         cmd += $" Description = '{(string)val}'";
                         break;
 
-                    case "Done":
+                    case "Status":
                         if (cond_num >= 1)
                         {
                             cmd += ",";
                         }
                         cond_num++;
-                        cmd += $" Done = {(int)val}";
+                        cmd += $" Status = {(int)val}";
                         break;
 
                     case "CategoryID":
@@ -287,7 +292,6 @@ namespace todolist_finalpro_framework
             Debug.WriteLine(cmd);
             NonQueryCmd(conn, cmd);
             return ;
-            
         }
 
     }
