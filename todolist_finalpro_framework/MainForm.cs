@@ -195,7 +195,7 @@ namespace todolist_finalpro_framework
                     string category = (Convert.ToString(gridToDo[col_ind, row_ind].Value));
                     int ind = Array.IndexOf(categories, category);
                     if (ind < 0) MessageBox.Show("Category does not exist!");
-                    cond.Add("CategoryID", ind);
+                    cond.Add("CategoryID", ind+1);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     break;
                 case 2:

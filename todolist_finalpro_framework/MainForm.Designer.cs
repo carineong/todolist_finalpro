@@ -36,6 +36,12 @@ namespace todolist_finalpro_framework
             this.formPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.monthCalendar = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.gridToDo = new System.Windows.Forms.DataGridView();
+            this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kryptonContextMenuSeparator1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
             this.kryptonContextMenuSeparator2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
             this.kryptonContextMenuHeading1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuHeading();
@@ -55,12 +61,8 @@ namespace todolist_finalpro_framework
             this.txtAddTask = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
             this.groupBoxNewTask = new System.Windows.Forms.GroupBox();
             this.comboProfile = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-            this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonDelete = new System.Windows.Forms.Button();
+            this.buttonSetting = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gridToDo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboCategory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboAddTask)).BeginInit();
@@ -257,6 +259,51 @@ namespace todolist_finalpro_framework
             this.gridToDo.TabIndex = 1;
             this.gridToDo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridToDo_CellEndEdit);
             // 
+            // columnDescription
+            // 
+            this.columnDescription.HeaderText = "Description";
+            this.columnDescription.MinimumWidth = 8;
+            this.columnDescription.Name = "columnDescription";
+            this.columnDescription.Width = 150;
+            // 
+            // columnCategory
+            // 
+            this.columnCategory.HeaderText = "Category";
+            this.columnCategory.MinimumWidth = 8;
+            this.columnCategory.Name = "columnCategory";
+            this.columnCategory.Width = 150;
+            // 
+            // columnEndDate
+            // 
+            this.columnEndDate.HeaderText = "End Date";
+            this.columnEndDate.MinimumWidth = 8;
+            this.columnEndDate.Name = "columnEndDate";
+            this.columnEndDate.Width = 150;
+            // 
+            // columnDayLeft
+            // 
+            this.columnDayLeft.HeaderText = "Day Left";
+            this.columnDayLeft.MinimumWidth = 8;
+            this.columnDayLeft.Name = "columnDayLeft";
+            this.columnDayLeft.ReadOnly = true;
+            this.columnDayLeft.Width = 150;
+            // 
+            // columnStatus
+            // 
+            this.columnStatus.HeaderText = "Status";
+            this.columnStatus.MinimumWidth = 8;
+            this.columnStatus.Name = "columnStatus";
+            this.columnStatus.Width = 150;
+            // 
+            // columnID
+            // 
+            this.columnID.HeaderText = "ID";
+            this.columnID.MinimumWidth = 8;
+            this.columnID.Name = "columnID";
+            this.columnID.ReadOnly = true;
+            this.columnID.Visible = false;
+            this.columnID.Width = 150;
+            // 
             // kryptonContextMenuHeading1
             // 
             this.kryptonContextMenuHeading1.ExtraText = "";
@@ -438,50 +485,25 @@ namespace todolist_finalpro_framework
             this.comboProfile.Text = "Select Profile";
             this.comboProfile.SelectedValueChanged += new System.EventHandler(this.comboProfile_SelectedValueChanged);
             // 
-            // columnDescription
+            // buttonDelete
             // 
-            this.columnDescription.HeaderText = "Description";
-            this.columnDescription.MinimumWidth = 8;
-            this.columnDescription.Name = "columnDescription";
-            this.columnDescription.Width = 150;
+            this.buttonDelete.Location = new System.Drawing.Point(1364, 26);
+            this.buttonDelete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonDelete.Name = "buttonDelete";
+            this.buttonDelete.Size = new System.Drawing.Size(170, 31);
+            this.buttonDelete.TabIndex = 16;
+            this.buttonDelete.Text = "Delete Selected?";
+            this.buttonDelete.UseVisualStyleBackColor = true;
             // 
-            // columnCategory
+            // buttonSetting
             // 
-            this.columnCategory.HeaderText = "Category";
-            this.columnCategory.MinimumWidth = 8;
-            this.columnCategory.Name = "columnCategory";
-            this.columnCategory.Width = 150;
-            // 
-            // columnEndDate
-            // 
-            this.columnEndDate.HeaderText = "End Date";
-            this.columnEndDate.MinimumWidth = 8;
-            this.columnEndDate.Name = "columnEndDate";
-            this.columnEndDate.Width = 150;
-            // 
-            // columnDayLeft
-            // 
-            this.columnDayLeft.HeaderText = "Day Left";
-            this.columnDayLeft.MinimumWidth = 8;
-            this.columnDayLeft.Name = "columnDayLeft";
-            this.columnDayLeft.ReadOnly = true;
-            this.columnDayLeft.Width = 150;
-            // 
-            // columnStatus
-            // 
-            this.columnStatus.HeaderText = "Status";
-            this.columnStatus.MinimumWidth = 8;
-            this.columnStatus.Name = "columnStatus";
-            this.columnStatus.Width = 150;
-            // 
-            // columnID
-            // 
-            this.columnID.HeaderText = "ID";
-            this.columnID.MinimumWidth = 8;
-            this.columnID.Name = "columnID";
-            this.columnID.ReadOnly = true;
-            this.columnID.Visible = false;
-            this.columnID.Width = 150;
+            this.buttonSetting.Location = new System.Drawing.Point(1188, 26);
+            this.buttonSetting.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonSetting.Name = "buttonSetting";
+            this.buttonSetting.Size = new System.Drawing.Size(170, 31);
+            this.buttonSetting.TabIndex = 17;
+            this.buttonSetting.Text = "Manage Categories";
+            this.buttonSetting.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -489,6 +511,8 @@ namespace todolist_finalpro_framework
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
             this.ClientSize = new System.Drawing.Size(1547, 623);
+            this.Controls.Add(this.buttonSetting);
+            this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.comboProfile);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.groupBoxNewTask);
@@ -546,6 +570,8 @@ namespace todolist_finalpro_framework
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDayLeft;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnID;
+        private System.Windows.Forms.Button buttonDelete;
+        private System.Windows.Forms.Button buttonSetting;
     }
 }
 
