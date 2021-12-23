@@ -27,7 +27,6 @@ namespace todolist_finalpro_framework
         List<ToDoModel> currentTaskList;
         int currentProfile, currentStatus, currentCategory;
 
-        /* Restructuring Functions */
         public MainForm()
         {
             InitializeComponent();
@@ -44,7 +43,7 @@ namespace todolist_finalpro_framework
                 my_db.InsertCategory(sqlite_conn, categories);
             }
 
-            // init
+            // init globals
             currentProfile = 0;
             currentCategory = -1;
             currentStatus = -1;
@@ -150,7 +149,7 @@ namespace todolist_finalpro_framework
             RefreshTable(InitCondition());
         }
 
-        // do something when selected date in calendar changed
+        // do something when selected date in calendar changed, i.e show ddl after selected date
         private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
             // calendar里的selected date改了以后在这里写代码
@@ -226,3 +225,46 @@ namespace todolist_finalpro_framework
         }
     }
 }
+
+/* ================================ Database operations =================================
+; 取得所有todo，没有条件限制
+; getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+
+; 有条件的取得todo, 可以多重
+; Dictionary<string, object> cond = new Dictionary<string, object> { };
+
+; 根据done status
+; cond.Add("Done", 0);
+
+; 根据类型
+; cond.Add("CategoryID", catogeries_id["Other"]);
+
+; 根据开始时间段（可以都是同一天或指定的时间段）
+; cond.Add("StartDate", new List<DateTime> { DateTime.Now.AddDays(-1), DateTime.Now.AddDays(-1) });
+
+; 根据预定结束时间段（可以都是同一天或指定的时间段）
+; cond.Add("EndDate", new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(25) });
+
+
+; List<ToDoModel> getCurrent = my_db.QueryToDo(sqlite_conn, cond);
+; Debug.WriteLine(getCurrent.Count);
+; foreach (ToDoModel todo in getCurrent)
+; {
+;     Debug.WriteLine($"id: {todo.ID}, Desc: {todo.Description}, Category: {categories[todo.Category-1]}, Start: {todo.Start.ToShortDateString()}, " +
+;                     $"End: {todo.End.ToShortDateString()}, Done: {todo.Done}\n");
+; }
+
+; 更新原本的todo
+; 先显示全部的todo
+
+; Dictionary<string, object> update_cond = new Dictionary<string, object> { };
+; update_cond.Add("Description", "Project X PPT");
+; update_cond.Add("Done", 0);
+; update_cond.Add("StartDate", DateTime.Now.AddDays(-4));
+; update_cond.Add("EndDate", DateTime.Now.AddDays(7));
+; update_cond.Add("CategoryID", categories_id["Work"]);
+; my_db.UpdateToDo(sqlite_conn, update_cond, getCurrent[1].ID);
+
+; getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+; Debug.WriteLine(getCurrent.Count);
+========================================================================================*/
