@@ -73,7 +73,13 @@ namespace todolist_finalpro_framework
             }
             comboProfile.Text = profiles[1]; //不确定
 
+
             InitCategories();
+            ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).Items.AddRange(status);
+            ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).FlatStyle = FlatStyle.Flat;
+            ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).FlatStyle = FlatStyle.Flat;
+
+
 
             RefreshTable(InitCondition());
 
@@ -83,16 +89,20 @@ namespace todolist_finalpro_framework
             categories.categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { {"Profile", currentProfile}});
             comboAddTask.Items.Clear();
             comboCategory.Items.Clear();
+            ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Clear();
             foreach (var cat in categories.categories)
             {
                 if (cat.desc == "All") continue;
                 comboAddTask.Items.Add(cat.desc);
+                ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Add(cat.desc);
+
             }
             comboAddTask.Text = "";
 
             foreach (var cat in categories.categories)
             {
                 comboCategory.Items.Add(cat.desc);
+
             }
             comboCategory.Text = "All";
         }
@@ -114,6 +124,7 @@ namespace todolist_finalpro_framework
             currentTaskList.todos = QueryToDo(sqlite_conn, cond);
             gridToDo.Rows.Clear();
             gridToDo.Refresh();
+
             int cnt = 0;
             foreach (ToDoModel todo in currentTaskList.todos)
             {
@@ -127,9 +138,10 @@ namespace todolist_finalpro_framework
                 gridToDo.Rows[cnt].Cells[5].Value = todo.id;
                 cnt++;
             }
+
         }
 
-        
+
         private void btnAll_Click(object sender, EventArgs e)
         {
             currentStatus = -1;
@@ -232,14 +244,17 @@ namespace todolist_finalpro_framework
                     var description = gridToDo[col_ind, row_ind].Value;
                     cond.Add("Description", Convert.ToString(description));
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    RefreshTable(InitCondition());
                     break;
                 case 1:
+                    //Debug.WriteLine(Convert.ToString(gridToDo[col_ind, row_ind].Value));
                     string category = (Convert.ToString(gridToDo[col_ind, row_ind].Value));
                     //int ind = Array.IndexOf(categories, category);
                     int ind = categories[category];
-                    if (ind < 0) MessageBox.Show("Category does not exist!");
+                    //if (ind < 0) MessageBox.Show("Category does not exist!");
                     cond.Add("CategoryID", ind+1);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    //RefreshTable(InitCondition());
                     break;
                 case 2:
                     DateTime endDate;
@@ -249,6 +264,7 @@ namespace todolist_finalpro_framework
                         //在database改
                         cond.Add("EndDate", endDate);
                         my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                        RefreshTable(InitCondition());
                     }
                     catch (FormatException)
                     {
@@ -264,7 +280,7 @@ namespace todolist_finalpro_framework
                     break;
 
             }
-            RefreshTable(InitCondition());
+            
         }
     }
 }

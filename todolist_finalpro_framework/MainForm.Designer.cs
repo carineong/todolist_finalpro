@@ -58,10 +58,10 @@ namespace todolist_finalpro_framework
             this.buttonCategory = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.buttonDelete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnStatus = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.gridToDo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboCategory)).BeginInit();
@@ -481,6 +481,7 @@ namespace todolist_finalpro_framework
             this.columnCategory.MinimumWidth = 8;
             this.columnCategory.Name = "columnCategory";
             this.columnCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnCategory.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.columnCategory.Width = 150;
             // 
             // columnEndDate
@@ -493,7 +494,7 @@ namespace todolist_finalpro_framework
             // 
             // columnDayLeft
             // 
-            this.columnDayLeft.HeaderText = "Day Left";
+            this.columnDayLeft.HeaderText = "Day(s) Left";
             this.columnDayLeft.MinimumWidth = 8;
             this.columnDayLeft.Name = "columnDayLeft";
             this.columnDayLeft.ReadOnly = true;
@@ -504,8 +505,8 @@ namespace todolist_finalpro_framework
             this.columnStatus.HeaderText = "Status";
             this.columnStatus.MinimumWidth = 8;
             this.columnStatus.Name = "columnStatus";
-            this.columnStatus.ReadOnly = true;
             this.columnStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.columnStatus.Width = 150;
             // 
             // columnID
@@ -513,7 +514,6 @@ namespace todolist_finalpro_framework
             this.columnID.HeaderText = "ID";
             this.columnID.MinimumWidth = 8;
             this.columnID.Name = "columnID";
-            this.columnID.ReadOnly = true;
             this.columnID.Visible = false;
             this.columnID.Width = 150;
             // 
@@ -579,10 +579,10 @@ namespace todolist_finalpro_framework
         private ComponentFactory.Krypton.Toolkit.KryptonButton buttonCategory;
         private ComponentFactory.Krypton.Toolkit.KryptonButton buttonDelete;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDescription;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCategory;
+        private System.Windows.Forms.DataGridViewComboBoxColumn columnCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnEndDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDayLeft;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
+        private System.Windows.Forms.DataGridViewComboBoxColumn columnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnID;
     }
 }
