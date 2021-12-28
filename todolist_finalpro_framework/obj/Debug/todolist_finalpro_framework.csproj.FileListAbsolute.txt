@@ -51,3 +51,26 @@ C:\Users\Sherie\Documents\CSharp Homework\todolist_finalpro\todolist_finalpro_fr
 C:\Users\Sherie\Documents\CSharp Homework\todolist_finalpro\todolist_finalpro_framework\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\Sherie\Documents\CSharp Homework\todolist_finalpro\todolist_finalpro_framework\bin\Debug\System.Data.SQLite.xml
 C:\Users\Sherie\Documents\CSharp Homework\todolist_finalpro\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.MainForm.resources
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\todolist_finalpro_framework.exe.config
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\todolist_finalpro_framework.exe
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\todolist_finalpro_framework.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\EntityFramework.dll
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\EntityFramework.SqlServer.dll
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\System.Data.SQLite.dll
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\System.Data.SQLite.EF6.dll
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\System.Data.SQLite.Linq.dll
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\ComponentFactory.Krypton.Docking.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\ComponentFactory.Krypton.Navigator.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\ComponentFactory.Krypton.Ribbon.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\ComponentFactory.Krypton.Toolkit.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\ComponentFactory.Krypton.Workspace.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\EntityFramework.xml
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\EntityFramework.SqlServer.xml
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\bin\Debug\System.Data.SQLite.xml
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.csproj.AssemblyReference.cache
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.MainForm.resources
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.Properties.Resources.resources
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.csproj.GenerateResource.cache
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.csproj.CoreCompileInputs.cache
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.exe
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.pdb
