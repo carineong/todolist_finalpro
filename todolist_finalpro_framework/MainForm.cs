@@ -146,24 +146,32 @@ namespace todolist_finalpro_framework
         {
             currentStatus = -1;
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         private void btnPending_Click(object sender, EventArgs e)
         {
             currentStatus = 0;
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         private void btnInProgress_Click(object sender, EventArgs e)
         {
             currentStatus = 1;
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         private void btnCompleted_Click(object sender, EventArgs e)
         {
             currentStatus = 2;
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         // add new task to database
@@ -178,6 +186,8 @@ namespace todolist_finalpro_framework
             new_todo.profile = currentProfile;
             my_db.InsertNewToDo(sqlite_conn, new_todo);
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         // do something when selected date in calendar changed, i.e show ddl after selected date
@@ -213,6 +223,7 @@ namespace todolist_finalpro_framework
             var cond = InitCondition();
             cond.Add("Deleted", 1);
             my_db.UpdateToDo(sqlite_conn, cond, data_id);
+            gridToDo.Focus();
         }
 
         private void buttonCategory_Click(object sender, EventArgs e)
@@ -221,6 +232,8 @@ namespace todolist_finalpro_framework
             f.ShowDialog();
             InitCategories();
             RefreshTable(InitCondition());
+            gridToDo.Focus();
+
         }
 
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
@@ -252,7 +265,7 @@ namespace todolist_finalpro_framework
                     //int ind = Array.IndexOf(categories, category);
                     int ind = categories[category];
                     //if (ind < 0) MessageBox.Show("Category does not exist!");
-                    cond.Add("CategoryID", ind+1);
+                    cond.Add("CategoryID", ind);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     //RefreshTable(InitCondition());
                     break;
