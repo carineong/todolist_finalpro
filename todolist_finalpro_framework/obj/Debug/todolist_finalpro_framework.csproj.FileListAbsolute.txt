@@ -74,3 +74,4 @@ D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_f
 D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.csproj.CoreCompileInputs.cache
 D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.exe
 D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.pdb
+D:\eeeug\Courses\C#程序设计及其应用\作业\大作业\todolist_finalpro_framework\obj\Debug\todolist_finalpro_framework.CategoryForm.resources
