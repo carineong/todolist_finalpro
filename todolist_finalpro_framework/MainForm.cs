@@ -20,10 +20,8 @@ namespace todolist_finalpro_framework
         public Database my_db;
         public SQLiteConnection sqlite_conn;
         public string[] preset_profiles = {"Study", "Personal", "Work", "Errands", "Others" };
-        public string[] preset_categories = {"All","ICS", "OS", "C-sharp"};
+        public string[] preset_categories = {"All"};
         public string[] status = { "Pending", "In Progress", "Completed" };
-        //public Dictionary<string, int> profiles_id = new Dictionary<string, int> { { "Study", 0 }, { "Personal", 1 }, { "Work", 2 }, { "Errands", 3 }, { "Others", 4 } };
-        //public Dictionary<string, int> categories_id;
 
         ListProfile profiles = new ListProfile();
         ListCategory categories = new ListCategory();
@@ -34,6 +32,7 @@ namespace todolist_finalpro_framework
         public Query<ToDoModel> QueryToDo;
         public Query<Profile> QueryProfile;
         public Query<Category> QueryCategory;
+
         public MainForm()
         {
             InitializeComponent();
@@ -43,7 +42,7 @@ namespace todolist_finalpro_framework
         private void MainForm_Load(object sender, EventArgs e)
         {
             my_db = new Database();
-            sqlite_conn = my_db.CreateConnection("Bob"); //数据库名字，若过后要实行user制度，可以每个user一个database
+            sqlite_conn = my_db.CreateConnection("Bob3"); //数据库名字，若过后要实行user制度，可以每个user一个database
 
             QueryToDo = my_db.QueryToDo;
             QueryProfile = my_db.QueryProfile;
@@ -54,10 +53,9 @@ namespace todolist_finalpro_framework
             if (create_table)
             {
                 my_db.InsertProfile(sqlite_conn, preset_profiles);
-                my_db.InsertCategory(sqlite_conn, preset_categories, Enumerable.Repeat<int>(1, preset_categories.Length).ToArray() );
+                //my_db.InsertCategory(sqlite_conn, preset_categories, Enumerable.Repeat<int>(1, preset_categories.Length).ToArray() );
             }
             profiles.profiles = QueryProfile(sqlite_conn, new Dictionary<string, object> { });
-            categories.categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { });
 
             // init globals
             currentProfile = 0;
@@ -68,7 +66,6 @@ namespace todolist_finalpro_framework
             monthCalendar.TodayDate = DateTime.Today;
             monthCalendar.SelectionStart = monthCalendar.SelectionEnd = monthCalendar.TodayDate;
             currentTaskList.todos = QueryToDo(sqlite_conn, new Dictionary<string, object> { });
-            //categories_id = my_db.GetCategoryID(sqlite_conn);
  
             foreach (var pro in profiles.profiles)
             {
@@ -76,22 +73,28 @@ namespace todolist_finalpro_framework
             }
             comboProfile.Text = profiles[1]; //不确定
 
+            InitCategories();
+
+            RefreshTable(InitCondition());
+
+        }
+        private void InitCategories()
+        {
+            categories.categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { {"Profile", currentProfile}});
+            comboAddTask.Items.Clear();
+            comboCategory.Items.Clear();
             foreach (var cat in categories.categories)
             {
                 if (cat.desc == "All") continue;
                 comboAddTask.Items.Add(cat.desc);
             }
-            comboAddTask.Text = categories[1];//不确定
+            comboAddTask.Text = "";
 
-            comboCategory.Items.Add("All");
             foreach (var cat in categories.categories)
             {
                 comboCategory.Items.Add(cat.desc);
             }
             comboCategory.Text = "All";
-
-            RefreshTable(InitCondition());
-
         }
         private Dictionary<string, object> InitCondition()
         {
@@ -117,7 +120,7 @@ namespace todolist_finalpro_framework
                 gridToDo.Rows.Add();
                 gridToDo.AutoGenerateColumns = true;
                 gridToDo.Rows[cnt].Cells[0].Value = todo.desc; 
-                gridToDo.Rows[cnt].Cells[1].Value = categories[todo.category - 1]; 
+                gridToDo.Rows[cnt].Cells[1].Value = categories[todo.category]; 
                 gridToDo.Rows[cnt].Cells[2].Value = todo.end.ToString("yyyy-MM-dd"); 
                 gridToDo.Rows[cnt].Cells[3].Value = (todo.end - DateTime.Today).ToString("dd"); 
                 gridToDo.Rows[cnt].Cells[4].Value = status[todo.status];
@@ -181,8 +184,31 @@ namespace todolist_finalpro_framework
         private void comboProfile_SelectedValueChanged(object sender, EventArgs e)
         {
             currentProfile = profiles[comboProfile.Text];
+            InitCategories();
+            RefreshTable(InitCondition());
+        }
+
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+        {
+            if(gridToDo.CurrentCell == null)
+            {
+                MessageBox.Show("Please select a task");
+                return;
+            }
+            int row_ind = gridToDo.CurrentCell.RowIndex;
+            int data_id = Convert.ToInt32(gridToDo[5, row_ind].Value);
             var cond = InitCondition();
-            RefreshTable(cond);
+            cond.Add("Deleted", 1);
+            my_db.UpdateToDo(sqlite_conn, cond, data_id);
+        }
+
+        private void buttonCategory_Click(object sender, EventArgs e)
+        {
+            var f = new CategoryForm(my_db, sqlite_conn, currentProfile);
+            f.ShowDialog();
+            InitCategories();
+            RefreshTable(InitCondition());
         }
 
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
