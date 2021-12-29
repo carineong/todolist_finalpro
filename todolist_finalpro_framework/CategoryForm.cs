@@ -15,8 +15,8 @@ namespace todolist_finalpro_framework
     public partial class CategoryForm : KryptonForm
     {
         int currentProfile = 0;
-        public Database my_db;
-        public SQLiteConnection sqlite_conn;
+        public Database myDatabase;
+        public SQLiteConnection sqliteConn;
         List<Category> categories = new List<Category> { };
         public Query<Category> QueryCategory;
         public Query<ToDoModel> QueryToDo;
@@ -24,27 +24,32 @@ namespace todolist_finalpro_framework
         public CategoryForm(Database db, SQLiteConnection sq, int p)
         {
             InitializeComponent();
-            my_db = db;
-            sqlite_conn = sq;
+            myDatabase = db;
+            sqliteConn = sq;
             currentProfile = p;
         }
         private void CategoryForm_Load(object sender, EventArgs e)
         {
-            QueryCategory = my_db.QueryCategory;
-            QueryToDo = my_db.QueryToDo;
+            QueryCategory = myDatabase.QueryCategory;
+            QueryToDo = myDatabase.QueryToDo;
             textBoxAdd.GotFocus += textBoxAdd_GotFocus;
             RefreshTable();
         }
+        
+        // 当用户Focus 时清除预设的文字
         private void textBoxAdd_GotFocus(object sender, EventArgs e)
         {
             textBoxAdd.Text = "";
         }
+
+        // 刷新GridView 界面
         private void RefreshTable()
         {
-            categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { {"Profile",currentProfile}});
+            categories = QueryCategory(sqliteConn, new Dictionary<string, object> { {"Profile",currentProfile}});
             gridCategory.Rows.Clear();
             gridCategory.Refresh();
 
+            // GridView 相关Styling
             foreach (DataGridViewColumn col in gridCategory.Columns)
             {
                 col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -54,6 +59,7 @@ namespace todolist_finalpro_framework
                 col.DefaultCellStyle.ForeColor = Color.White;
             }
 
+            // 显示当前Profile 的所有Category
             int cnt = 0;
             foreach (Category cat in categories)
             {
@@ -68,6 +74,7 @@ namespace todolist_finalpro_framework
             gridCategory.Focus();
         }
 
+        // 增加新的Category
         private void btnAdd_Click(object sender, EventArgs e)
         {
             string cat = textBoxAdd.Text;
@@ -84,10 +91,11 @@ namespace todolist_finalpro_framework
                     return;
                 }
             }
-            my_db.InsertCategory(sqlite_conn, new string[] { cat }, new int[] { currentProfile });
+            myDatabase.InsertCategory(sqliteConn, new string[] { cat }, new int[] { currentProfile });
             RefreshTable();
         }
 
+        // 删除旧的Category，且该Category下的所有原To-do 任务被分配成无标签
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (gridCategory.CurrentCell == null)
@@ -99,14 +107,15 @@ namespace todolist_finalpro_framework
             string type = gridCategory[0, row_ind].Value.ToString();
             int data_id = Convert.ToInt32(gridCategory[1, row_ind].Value);
             var cond = new Dictionary<string, object> { { "Profile", currentProfile }, { "Type", type }, { "Deleted", 1 } };
-            my_db.UpdateProfile_Category(sqlite_conn, "Category", cond, data_id);
+            myDatabase.UpdateProfile_Category(sqliteConn, "Category", cond, data_id);
 
+            // 该Category下的所有原To-do 任务被分配成无标签
             List<ToDoModel> catTaskList = new List<ToDoModel>();
-            catTaskList = QueryToDo(sqlite_conn, new Dictionary<string, object> { { "CategoryID", data_id } });
-            cond = new Dictionary<string, object> { { "CategoryID", 1 } };
+            catTaskList = QueryToDo(sqliteConn, new Dictionary<string, object> { { "CategoryID", data_id } });
+            cond = new Dictionary<string, object> { { "CategoryID", 1 } }; // CategoryID = 1 默认为无标签
             foreach (ToDoModel todo in catTaskList)
             {
-                my_db.UpdateToDo(sqlite_conn, cond, todo.id);
+                myDatabase.UpdateToDo(sqliteConn, cond, todo.id);
             }
             RefreshTable();
         }

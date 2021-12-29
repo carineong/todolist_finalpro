@@ -15,6 +15,8 @@ namespace todolist_finalpro_framework
     public class ListProfile
     {
         public List<Profile> profiles;
+
+        // 使用Profile ID索引出Profile 的名字
         public string this[int i]
         {
 
@@ -23,13 +25,9 @@ namespace todolist_finalpro_framework
                 var cat = profiles.Find(x => (x.id == i));
                 return cat.desc;
             }
-            //set
-            //{
-            //    var cat = profiles.Find(x => (x.id == i));
-            //    cat.desc = value;
-            //}
         }
 
+        // 使用Profile 的名字索引出Profile ID
         public int this[string i]
         {
 
@@ -38,11 +36,6 @@ namespace todolist_finalpro_framework
                 var cat = profiles.Find(x => (x.desc == i));
                 return cat.id;
             }
-            //set
-            //{
-            //    var cat = profiles.Find(x => (x.desc == i));
-            //    cat.id = value;
-            //}
         }
 
     }

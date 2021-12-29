@@ -22,20 +22,18 @@ namespace todolist_finalpro_framework
     public class ListToDo
     {
         public List<ToDoModel> todos;
+
+        // 使用To-do 任务的ID索引出To-do 任务的名字
         public string this[int i]
         {
-
             get
             {
                 var todo = todos.Find(x => (x.id == i));
                 return todo.desc;
             }
-            //set { 
-            //    var todo = todos.Find(x => (x.id == i));
-            //    todo.desc = value; 
-            //}
         }
 
+        // 使用To-do 任务的名字索引出To-do 任务的ID
         public int this[string i]
         {
 
@@ -44,11 +42,6 @@ namespace todolist_finalpro_framework
                 var todo = todos.Find(x => (x.desc == i));
                 return todo.id;
             }
-            //set
-            //{
-            //    var todo = todos.Find(x => (x.desc == i));
-            //    todo.id = value;
-            //}
         }
 
         public ListToDo getProfiles_ToDo(int profile_id)

@@ -17,6 +17,8 @@ namespace todolist_finalpro_framework
     public class ListCategory
     {
         public List<Category> categories;
+
+        // 使用Category ID 索引出Category的名字
         public string this[int i]
         {
             
@@ -25,12 +27,9 @@ namespace todolist_finalpro_framework
                 if (cat == null) return "";
                 return cat.desc; 
             }
-            //set { 
-            //    var cat = categories.Find(x => (x.id == i));
-            //    cat.desc = value; 
-            //}
         }
 
+        // 使用Category 的名字索引出Category ID
         public int this[string i]
         {
 
@@ -40,11 +39,6 @@ namespace todolist_finalpro_framework
                 if (cat == null) return 0;
                 return cat.id;
             }
-            //set
-            //{
-            //    var cat = categories.Find(x => (x.desc == i));
-            //    cat.id = value;
-            //}
         }
 
         public ListCategory getProfiles_Category(int profile_id)

@@ -13,22 +13,25 @@ namespace todolist_finalpro_framework
 {
     public partial class PomodoroForm : KryptonForm
     {
-        int minSet = 50;
+        int minSet = 50; // 记录预设的时长
         int min = 50;
         int sec = 0;
-        int profile = 0;
+        int profile = 0; // 扩展：记录数据，分析每个Profile / Category 的专注时间
         public PomodoroForm(int p)
         {
             InitializeComponent();
             profile = p;
         }
-
+        
+        // 刷新定时器文字
         private void RefreshUI()
         {
             labelMin.Text = min.ToString();
             if (sec < 10) labelSec.Text = $"0{sec}";
             else labelSec.Text = sec.ToString();
         }
+
+        // 增加预设时间（5分钟）
         private void pictureBoxUp_Click(object sender, EventArgs e)
         {
             min += 5;
@@ -37,6 +40,7 @@ namespace todolist_finalpro_framework
             RefreshUI();
         }
 
+        // 减少预设时间（5分钟）
         private void pictureBoxDown_Click(object sender, EventArgs e)
         {
             min -= 5;
@@ -45,6 +49,7 @@ namespace todolist_finalpro_framework
             RefreshUI();
         }
 
+        // 开始 or 取消
         private void buttonStart_Click(object sender, EventArgs e)
         {
             labelMin.Focus();
@@ -64,6 +69,7 @@ namespace todolist_finalpro_framework
             RefreshUI();
         }
 
+        // Interval = 1s，每一秒跳一次
         private void timer1_Tick(object sender, EventArgs e)
         {
             sec -= 1;
@@ -76,6 +82,8 @@ namespace todolist_finalpro_framework
             {
                 timer1.Enabled = false;
                 MessageBox.Show($"Congratulation! You have stayed focused for {minSet} mins!");
+                min = minSet;
+                sec = 0;
                 buttonStart.Text = "START";
             }
             RefreshUI();

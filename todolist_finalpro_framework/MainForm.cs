@@ -16,13 +16,12 @@ namespace todolist_finalpro_framework
     public delegate List<T> Query<T>(SQLiteConnection conn, Dictionary<string, object> cond, int not_delete = 1);
     public partial class MainForm : KryptonForm
     {
-        // table format :  desc, category, ddl, day left, status
-        public Database my_db;
-        public SQLiteConnection sqlite_conn;
-        public string[] preset_profiles = {"Study", "Personal", "Work", "Errands", "Others" };
-        public string[] preset_categories = {""};
+        public Database myDatabase;
+        public SQLiteConnection sqliteConn;
+        public string[] presetProfiles = {"Study", "Personal", "Work", "Errands", "Others" };
+        public string[] presetCategories = {""};
         public string[] status = { "Pending", "In Progress", "Completed" };
-        public string[] priority_display = { "☆", "★" };
+        public string[] priorityDisplay = { "☆", "★" };
 
         ListProfile profiles = new ListProfile();
         ListCategory categories = new ListCategory();
@@ -42,37 +41,37 @@ namespace todolist_finalpro_framework
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            my_db = new Database();
-            sqlite_conn = my_db.CreateConnection("Bob"); //数据库名字，若过后要实行user制度，可以每个user一个database
-
-            QueryToDo = my_db.QueryToDo;
-            QueryProfile = my_db.QueryProfile;
-            QueryCategory = my_db.QueryCategory;
+            myDatabase = new Database();
+            sqliteConn = myDatabase.CreateConnection("Bob"); // 数据库名字，若过后要实行user制度，可以每个user一个database
+            
+            // 注册+委托
+            QueryToDo = myDatabase.QueryToDo;
+            QueryProfile = myDatabase.QueryProfile;
+            QueryCategory = myDatabase.QueryCategory;
             txtAddTask.GotFocus += txtAddTask_GotFocus;
 
-
-            bool create_table = my_db.CreateTable(sqlite_conn); //若true，则初次创建；若false，则已经存在该表格
-            if (create_table)
+            if (myDatabase.CreateTable(sqliteConn)) // 若true，则初次创建；若false，则已经存在该表格
             {
-                my_db.InsertProfile(sqlite_conn, preset_profiles);
-                for(int i = 1; i <= 5; i++)
+                myDatabase.InsertProfile(sqliteConn, presetProfiles);
+                for(int i = 1; i <= presetProfiles.Length; i++)
                 {
-                    my_db.InsertCategory(sqlite_conn, preset_categories, Enumerable.Repeat<int>(i, preset_categories.Length).ToArray());
+                    myDatabase.InsertCategory(sqliteConn, presetCategories, Enumerable.Repeat<int>(i, presetCategories.Length).ToArray());
                 }       
             }
-            profiles.profiles = QueryProfile(sqlite_conn, new Dictionary<string, object> { });
+            profiles.profiles = QueryProfile(sqliteConn, new Dictionary<string, object> { });
 
-            // init globals
+            // 初始化全局数据（GridView里要展示什么Data）
             currentProfile = 0;
             currentCategory = -1;
             currentStatus = -1;
+            currentTaskList.todos = QueryToDo(sqliteConn, new Dictionary<string, object> { });
 
-            // init calendar
+            // 初始化日历控件
             monthCalendar.TodayDate = DateTime.Today;
             monthCalendar.SelectionStart = monthCalendar.SelectionEnd = monthCalendar.TodayDate;
             datePickerEnd.CalendarTodayDate = DateTime.Today;
-            currentTaskList.todos = QueryToDo(sqlite_conn, new Dictionary<string, object> { });
- 
+            
+            // 初始化Profile选取栏
             foreach (var pro in profiles.profiles)
             {
                 comboProfile.Items.Add(pro.desc);
@@ -80,8 +79,10 @@ namespace todolist_finalpro_framework
             comboProfile.Text = profiles[1]; //不确定
 
             
+            // 初始化Category选取栏
             InitCategories();
-            // gridview 设置一些特殊column的外表
+
+            // GridView 设置一些特殊column 的外表
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).Items.AddRange(status);
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).FlatStyle = FlatStyle.Flat;
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).FlatStyle = FlatStyle.Flat;
@@ -89,15 +90,16 @@ namespace todolist_finalpro_framework
            
             // 这是为了设置button 中的星星， 尤其注意设置的font 和default 有关系，可以适当改 
             ((DataGridViewButtonColumn)gridToDo.Columns["columnPriority"]).FlatStyle = FlatStyle.Popup;
-
             ((DataGridViewButtonColumn)gridToDo.Columns["columnPriority"]).DefaultCellStyle.Font =
                 new Font("Times New Roman", gridToDo.DefaultCellStyle.Font.Size * 2, FontStyle.Regular);
             RefreshTable(InitCondition());
-
         }
         private void InitCategories()
         {
-            categories.categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { {"Profile", currentProfile}});
+            // 从Database 中读出所有的categories
+            categories.categories = QueryCategory(sqliteConn, new Dictionary<string, object> { {"Profile", currentProfile}});
+
+            // 在Combobox 控件中添加相应的category
             comboAddTask.Items.Clear();
             comboCategory.Items.Clear();
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Clear();
@@ -120,6 +122,8 @@ namespace todolist_finalpro_framework
             }
             comboCategory.Text = "All";
         }
+
+        // 生成SQL 查询的基本条件 
         private Dictionary<string, object> InitCondition()
         {
             var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
@@ -133,11 +137,14 @@ namespace todolist_finalpro_framework
             }
             return cond;
         }
+
+        // 刷新To-do任务GridView
         private void RefreshTable(Dictionary<string, object> cond)
         {
-            currentTaskList.todos = QueryToDo(sqlite_conn, cond);
+            currentTaskList.todos = QueryToDo(sqliteConn, cond);
             try
             {
+                // 如果用户在修改GridView 以后立刻Focus到别的 Cell，此时Clear 会出现Reentrant 错误
                 gridToDo.Rows.Clear();
             }
             catch
@@ -146,6 +153,7 @@ namespace todolist_finalpro_framework
             }
             gridToDo.Refresh();
 
+            // GridView 的Styling
             foreach (DataGridViewColumn col in gridToDo.Columns)
             {
                 col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -155,6 +163,8 @@ namespace todolist_finalpro_framework
                 col.DefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
                 col.DefaultCellStyle.ForeColor = Color.White;
             }
+
+            // 先显示优先级高的
             int cnt = 0;
             foreach (ToDoModel todo in currentTaskList.todos)
             {
@@ -163,12 +173,12 @@ namespace todolist_finalpro_framework
                 gridToDo.AutoGenerateColumns = true;
                 if(todo.prior == 1)
                 {
-                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[1];
+                    gridToDo.Rows[cnt].Cells[0].Value = priorityDisplay[1];
                     gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.Yellow;
                 }
                 else
                 {
-                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[0];
+                    gridToDo.Rows[cnt].Cells[0].Value = priorityDisplay[0];
                     gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.White;
                 }
                 
@@ -196,6 +206,8 @@ namespace todolist_finalpro_framework
                 gridToDo.Rows[cnt].Cells[6].Value = todo.id;
                 cnt++;
             }
+
+            // 再显示优先级低的
             foreach (ToDoModel todo in currentTaskList.todos)
             {
                 if (todo.prior == 1) continue;
@@ -203,12 +215,12 @@ namespace todolist_finalpro_framework
                 gridToDo.AutoGenerateColumns = true;
                 if (todo.prior == 1)
                 {
-                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[1];
+                    gridToDo.Rows[cnt].Cells[0].Value = priorityDisplay[1];
                     gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.Yellow;
                 }
                 else
                 {
-                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[0];
+                    gridToDo.Rows[cnt].Cells[0].Value = priorityDisplay[0];
                     gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.White;
                 }
 
@@ -239,75 +251,58 @@ namespace todolist_finalpro_framework
             gridToDo.Focus();
         }
 
-
+        // 显示所有To-do 任务
         private void btnAll_Click(object sender, EventArgs e)
         {
             currentStatus = -1;
             RefreshTable(InitCondition());
         }
 
+        // 显示还没开始做的To-do 任务
         private void btnPending_Click(object sender, EventArgs e)
         {
             currentStatus = 0;
             RefreshTable(InitCondition());
         }
 
+        // 显示正在进行中的To-do 任务
         private void btnInProgress_Click(object sender, EventArgs e)
         {
             currentStatus = 1;
             RefreshTable(InitCondition());
         }
 
+        // 显示已完成的To-do 任务
         private void btnCompleted_Click(object sender, EventArgs e)
         {
             currentStatus = 2;
             RefreshTable(InitCondition());
         }
 
-        // add new task to database
+        // 增添新的To-do 任务
         private void btnEnterTask_Click(object sender, EventArgs e)
         {
             ToDoModel new_todo = new ToDoModel();
-            if(txtAddTask.Text == "")
+            if(txtAddTask.Text == "") // 保卫语句
             {
                 MessageBox.Show("Please enter a valid description");
                 return;
             }
             new_todo.desc = txtAddTask.Text;
-            new_todo.category = categories[comboAddTask.Text];
+            new_todo.category = categories[comboAddTask.Text]; // 注意 Category 可以为空（不设类型）
             new_todo.start = DateTime.Today;
             new_todo.end = datePickerEnd.Value;
             new_todo.status = 0;
             new_todo.profile = currentProfile;
             new_todo.prior = 0;
-            my_db.InsertNewToDo(sqlite_conn, new_todo);
+            myDatabase.InsertNewToDo(sqliteConn, new_todo);
             RefreshTable(InitCondition());
         }
 
-        // do something when selected date in calendar changed, i.e show ddl after selected date
-        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
-        {
-            // calendar里的selected date改了以后在这里写代码
-            //Debug.WriteLine($"DataType: {e.Start.GetType()}, Date Changed: Start =  " +
-            //            e.Start.ToShortDateString() + " : End = " + e.End.ToShortDateString());
-            List<DateTime> selectedDateRange = new List<DateTime> { e.Start, e.End };
-            Debug.Write("Date changed");
-            var cond = InitCondition();
-            cond.Add("EndDate", selectedDateRange);
-            RefreshTable(cond);
-        }
-
-        private void comboProfile_SelectedValueChanged(object sender, EventArgs e)
-        {
-            currentProfile = profiles[comboProfile.Text];
-            InitCategories();
-            RefreshTable(InitCondition());
-        }
-
-
+        // 删除To-do 任务
         private void buttonDelete_Click(object sender, EventArgs e)
         {
-            if(gridToDo.CurrentCell == null)
+            if (gridToDo.CurrentCell == null)
             {
                 MessageBox.Show("Please select a task");
                 return;
@@ -315,47 +310,23 @@ namespace todolist_finalpro_framework
             int row_ind = gridToDo.CurrentCell.RowIndex;
             int data_id = Convert.ToInt32(gridToDo[6, row_ind].Value);
             var cond = InitCondition();
-            cond.Add("Deleted", 1);
-            my_db.UpdateToDo(sqlite_conn, cond, data_id);
-            gridToDo.Focus();
+            cond.Add("Deleted", 1); // 不直接从Database 中删除，以便之后还可以恢复
+            myDatabase.UpdateToDo(sqliteConn, cond, data_id);
+            RefreshTable(InitCondition());
         }
 
+        // 增加新的Category or 删除旧的Category
         private void buttonCategory_Click(object sender, EventArgs e)
         {
             gridToDo.Focus();
-            var f = new CategoryForm(my_db, sqlite_conn, currentProfile);
+            var f = new CategoryForm(myDatabase, sqliteConn, currentProfile);
             f.ShowDialog();
             InitCategories();
             RefreshTable(InitCondition());
 
         }
 
-        private void gridToDo_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
-            {
-                if (e.RowIndex == -1) return;
-                // 从 not priority 设置成 priority
-                if (gridToDo.Rows[e.RowIndex].Cells[0].Value.ToString() == priority_display[0])
-                {
-                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priority_display[1]; // display
-                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
-                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
-                    cond.Add("Priority", 1);
-                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
-                }
-                //从 priority 设置成 not priority
-                else
-                {
-                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priority_display[0];
-                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
-                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
-                    cond.Add("Priority", 0);
-                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
-                }
-                RefreshTable(InitCondition());
-            }
-        }
+        // 使用番茄钟小工具，完成任务
         private void buttonPomodoro_Click(object sender, EventArgs e)
         {
             gridToDo.Focus();
@@ -363,6 +334,53 @@ namespace todolist_finalpro_framework
             f.ShowDialog();
         }
 
+        // 只处理点击Priority 星星的 Cell， 设置任务的优先级
+        private void gridToDo_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
+            {
+                if (e.RowIndex == -1) return;
+                // 从 not priority 设置成 priority
+                if (gridToDo.Rows[e.RowIndex].Cells[0].Value.ToString() == priorityDisplay[0])
+                {
+                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priorityDisplay[1]; // display
+                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
+                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
+                    cond.Add("Priority", 1);
+                    myDatabase.UpdateToDo(sqliteConn, cond, data_id);
+                }
+                //从 priority 设置成 not priority
+                else
+                {
+                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priorityDisplay[0];
+                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
+                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
+                    cond.Add("Priority", 0);
+                    myDatabase.UpdateToDo(sqliteConn, cond, data_id);
+                }
+                RefreshTable(InitCondition());
+            }
+        }
+
+        // Calendar 控件：显示指定日期以后ddl 的所有任务
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+            List<DateTime> selectedDateRange = new List<DateTime> { e.Start, e.End };
+            Debug.Write("Date changed");
+            var cond = InitCondition();
+            cond.Add("EndDate", selectedDateRange);
+            RefreshTable(cond);
+        }
+
+        // 切换Profile
+        private void comboProfile_SelectedValueChanged(object sender, EventArgs e)
+        {
+            currentProfile = profiles[comboProfile.Text];
+            InitCategories();
+            RefreshTable(InitCondition());
+        }
+
+        // 只显示选定Category 的To-do 任务
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
         {
             currentCategory = comboCategory.Text == "All" ? -1 : categories[comboCategory.Text];
@@ -370,6 +388,7 @@ namespace todolist_finalpro_framework
             RefreshTable(cond);
         }
 
+        // 直接从GridView 中修改To-do 任务的相关信息，并同步到数据库中
         private void gridToDo_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             int col_ind = gridToDo.CurrentCell.ColumnIndex;
@@ -379,42 +398,44 @@ namespace todolist_finalpro_framework
 
             switch (col_ind)
             {
-                case 1:
+                case 1: // Column = Description
                     var description = gridToDo[col_ind, row_ind].Value;
                     cond.Add("Description", Convert.ToString(description));
-                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    myDatabase.UpdateToDo(sqliteConn, cond, data_id);
                     break;
-                case 2:
+                case 2: // Column = Category
                     string category = (Convert.ToString(gridToDo[col_ind, row_ind].Value));
                     int ind = categories[category];
                     cond.Add("CategoryID", ind);
-                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    myDatabase.UpdateToDo(sqliteConn, cond, data_id);
                     gridToDo.Rows[row_ind].Cells[2].Style.ForeColor = MyColour.categories[ind % MyColour.categories.Length];
                     break;
-                case 3:
+                case 3: // Column = Date End
                     DateTime endDate;
                     try
                     {
                         endDate = Convert.ToDateTime(gridToDo[col_ind, row_ind].Value);
                         //在database改
                         cond.Add("EndDate", endDate);
-                        my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                        myDatabase.UpdateToDo(sqliteConn, cond, data_id);
                     }
                     catch (FormatException)
                     {
                         MessageBox.Show("Wrong end date format!");
                     }
                     break;
-                case 5:
+                case 5: // Column = Status
                     string stat = Convert.ToString(gridToDo[col_ind, row_ind].Value);
                     ind = Array.IndexOf(status, stat);
                     if (ind < 0) MessageBox.Show("Status does not exist!");
                     cond.Add("Status", ind);
-                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                    myDatabase.UpdateToDo(sqliteConn, cond, data_id);
                     break;
             }
             RefreshTable(InitCondition());
         }
+
+        // 为了在用户点击时清除textbox 中的默认文字
         private void txtAddTask_GotFocus(object sender, EventArgs e)
         {
             txtAddTask.Text = "";
@@ -424,7 +445,7 @@ namespace todolist_finalpro_framework
 
 /* ================================ Database operations =================================
 ; 取得所有todo，没有条件限制
-; getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+; getCurrent = myDatabase.QueryToDo(sqliteConn, new Dictionary<string, object> { });
 
 ; 有条件的取得todo, 可以多重
 ; Dictionary<string, object> cond = new Dictionary<string, object> { };
@@ -442,7 +463,7 @@ namespace todolist_finalpro_framework
 ; cond.Add("EndDate", new List<DateTime> { DateTime.Now, DateTime.Now.AddDays(25) });
 
 
-; List<ToDoModel> getCurrent = my_db.QueryToDo(sqlite_conn, cond);
+; List<ToDoModel> getCurrent = myDatabase.QueryToDo(sqliteConn, cond);
 ; Debug.WriteLine(getCurrent.Count);
 ; foreach (ToDoModel todo in getCurrent)
 ; {
@@ -459,8 +480,8 @@ namespace todolist_finalpro_framework
 ; update_cond.Add("StartDate", DateTime.Now.AddDays(-4));
 ; update_cond.Add("EndDate", DateTime.Now.AddDays(7));
 ; update_cond.Add("CategoryID", categories_id["Work"]);
-; my_db.UpdateToDo(sqlite_conn, update_cond, getCurrent[1].ID);
+; myDatabase.UpdateToDo(sqliteConn, update_cond, getCurrent[1].ID);
 
-; getCurrent = my_db.QueryToDo(sqlite_conn, new Dictionary<string, object> { });
+; getCurrent = myDatabase.QueryToDo(sqliteConn, new Dictionary<string, object> { });
 ; Debug.WriteLine(getCurrent.Count);
 ========================================================================================*/
