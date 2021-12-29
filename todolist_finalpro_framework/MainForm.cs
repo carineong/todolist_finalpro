@@ -42,7 +42,7 @@ namespace todolist_finalpro_framework
         private void MainForm_Load(object sender, EventArgs e)
         {
             my_db = new Database();
-            sqlite_conn = my_db.CreateConnection("Bob4"); //数据库名字，若过后要实行user制度，可以每个user一个database
+            sqlite_conn = my_db.CreateConnection("Bob5"); //数据库名字，若过后要实行user制度，可以每个user一个database
 
             QueryToDo = my_db.QueryToDo;
             QueryProfile = my_db.QueryProfile;
@@ -194,6 +194,11 @@ namespace todolist_finalpro_framework
         private void btnEnterTask_Click(object sender, EventArgs e)
         {
             ToDoModel new_todo = new ToDoModel();
+            if(txtAddTask.Text == "")
+            {
+                MessageBox.Show("Please enter a valid description");
+                return;
+            }
             new_todo.desc = txtAddTask.Text;
             new_todo.category = categories[comboAddTask.Text];
             new_todo.start = DateTime.Today;
