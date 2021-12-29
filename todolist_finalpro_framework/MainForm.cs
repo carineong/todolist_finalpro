@@ -20,7 +20,7 @@ namespace todolist_finalpro_framework
         public Database my_db;
         public SQLiteConnection sqlite_conn;
         public string[] preset_profiles = {"Study", "Personal", "Work", "Errands", "Others" };
-        public string[] preset_categories = {"None"};
+        public string[] preset_categories = {""};
         public string[] status = { "Pending", "In Progress", "Completed" };
         public string[] priority_display = { "☆", "★" };
 
@@ -48,6 +48,7 @@ namespace todolist_finalpro_framework
             QueryToDo = my_db.QueryToDo;
             QueryProfile = my_db.QueryProfile;
             QueryCategory = my_db.QueryCategory;
+            txtAddTask.GotFocus += txtAddTask_GotFocus;
 
 
             bool create_table = my_db.CreateTable(sqlite_conn); //若true，则初次创建；若false，则已经存在该表格
@@ -69,6 +70,7 @@ namespace todolist_finalpro_framework
             // init calendar
             monthCalendar.TodayDate = DateTime.Today;
             monthCalendar.SelectionStart = monthCalendar.SelectionEnd = monthCalendar.TodayDate;
+            datePickerEnd.CalendarTodayDate = DateTime.Today;
             currentTaskList.todos = QueryToDo(sqlite_conn, new Dictionary<string, object> { });
  
             foreach (var pro in profiles.profiles)
@@ -134,25 +136,45 @@ namespace todolist_finalpro_framework
         private void RefreshTable(Dictionary<string, object> cond)
         {
             currentTaskList.todos = QueryToDo(sqlite_conn, cond);
-            gridToDo.Rows.Clear();
+            try
+            {
+                gridToDo.Rows.Clear();
+            }
+            catch
+            {
+                return;
+            }
             gridToDo.Refresh();
 
+            foreach (DataGridViewColumn col in gridToDo.Columns)
+            {
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                if (col.HeaderText == "Priority") continue;
+                col.DefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+                col.DefaultCellStyle.ForeColor = Color.White;
+            }
             int cnt = 0;
             foreach (ToDoModel todo in currentTaskList.todos)
             {
+                if (todo.prior == 0) continue;
                 gridToDo.Rows.Add();
                 gridToDo.AutoGenerateColumns = true;
                 if(todo.prior == 1)
                 {
                     gridToDo.Rows[cnt].Cells[0].Value = priority_display[1];
+                    gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.Yellow;
                 }
                 else
                 {
                     gridToDo.Rows[cnt].Cells[0].Value = priority_display[0];
+                    gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.White;
                 }
                 
-                gridToDo.Rows[cnt].Cells[1].Value = todo.desc; 
-                
+                gridToDo.Rows[cnt].Cells[1].Value = todo.desc;
+
+                gridToDo.Rows[cnt].Cells[2].Style.ForeColor = MyColour.categories[todo.category % MyColour.categories.Length];
                 gridToDo.Rows[cnt].Cells[2].Value = categories[todo.category]; 
                 gridToDo.Rows[cnt].Cells[3].Value = todo.end.ToString("yyyy-MM-dd");
                 if (todo.end < DateTime.Today)
@@ -168,7 +190,47 @@ namespace todolist_finalpro_framework
                 }
                 else
                 {
-                    gridToDo.Rows[cnt].Cells[4].Value = (todo.end - DateTime.Today).ToString("dd");
+                    gridToDo.Rows[cnt].Cells[4].Value = (todo.end - DateTime.Today).TotalDays;
+                }
+                gridToDo.Rows[cnt].Cells[5].Value = status[todo.status];
+                gridToDo.Rows[cnt].Cells[6].Value = todo.id;
+                cnt++;
+            }
+            foreach (ToDoModel todo in currentTaskList.todos)
+            {
+                if (todo.prior == 1) continue;
+                gridToDo.Rows.Add();
+                gridToDo.AutoGenerateColumns = true;
+                if (todo.prior == 1)
+                {
+                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[1];
+                    gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.Yellow;
+                }
+                else
+                {
+                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[0];
+                    gridToDo.Rows[cnt].Cells[0].Style.ForeColor = Color.White;
+                }
+
+                gridToDo.Rows[cnt].Cells[1].Value = todo.desc;
+
+                gridToDo.Rows[cnt].Cells[2].Style.ForeColor = MyColour.categories[todo.category % MyColour.categories.Length];
+                gridToDo.Rows[cnt].Cells[2].Value = categories[todo.category];
+                gridToDo.Rows[cnt].Cells[3].Value = todo.end.ToString("yyyy-MM-dd");
+                if (todo.end < DateTime.Today)
+                {
+                    if (todo.status == 2) // Completed
+                    {
+                        gridToDo.Rows[cnt].Cells[4].Value = "0";
+                    }
+                    else
+                    {
+                        gridToDo.Rows[cnt].Cells[4].Value = "Overdue";
+                    }
+                }
+                else
+                {
+                    gridToDo.Rows[cnt].Cells[4].Value = (todo.end - DateTime.Today).TotalDays;
                 }
                 gridToDo.Rows[cnt].Cells[5].Value = status[todo.status];
                 gridToDo.Rows[cnt].Cells[6].Value = todo.id;
@@ -291,7 +353,7 @@ namespace todolist_finalpro_framework
                     cond.Add("Priority", 0);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                 }
-
+                RefreshTable(InitCondition());
             }
         }
         private void buttonPomodoro_Click(object sender, EventArgs e)
@@ -321,14 +383,13 @@ namespace todolist_finalpro_framework
                     var description = gridToDo[col_ind, row_ind].Value;
                     cond.Add("Description", Convert.ToString(description));
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
-                    RefreshTable(InitCondition());
                     break;
                 case 2:
                     string category = (Convert.ToString(gridToDo[col_ind, row_ind].Value));
                     int ind = categories[category];
                     cond.Add("CategoryID", ind);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
-                    //RefreshTable(InitCondition());
+                    gridToDo.Rows[row_ind].Cells[2].Style.ForeColor = MyColour.categories[ind % MyColour.categories.Length];
                     break;
                 case 3:
                     DateTime endDate;
@@ -338,7 +399,6 @@ namespace todolist_finalpro_framework
                         //在database改
                         cond.Add("EndDate", endDate);
                         my_db.UpdateToDo(sqlite_conn, cond, data_id);
-                        RefreshTable(InitCondition());
                     }
                     catch (FormatException)
                     {
@@ -352,9 +412,12 @@ namespace todolist_finalpro_framework
                     cond.Add("Status", ind);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     break;
-
             }
-            
+            RefreshTable(InitCondition());
+        }
+        private void txtAddTask_GotFocus(object sender, EventArgs e)
+        {
+            txtAddTask.Text = "";
         }
     }
 }

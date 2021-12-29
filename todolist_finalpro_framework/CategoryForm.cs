@@ -20,6 +20,7 @@ namespace todolist_finalpro_framework
         List<Category> categories = new List<Category> { };
         public Query<Category> QueryCategory;
         public Query<ToDoModel> QueryToDo;
+
         public CategoryForm(Database db, SQLiteConnection sq, int p)
         {
             InitializeComponent();
@@ -31,20 +32,35 @@ namespace todolist_finalpro_framework
         {
             QueryCategory = my_db.QueryCategory;
             QueryToDo = my_db.QueryToDo;
+            textBoxAdd.GotFocus += textBoxAdd_GotFocus;
             RefreshTable();
         }
-
+        private void textBoxAdd_GotFocus(object sender, EventArgs e)
+        {
+            textBoxAdd.Text = "";
+        }
         private void RefreshTable()
         {
             categories = QueryCategory(sqlite_conn, new Dictionary<string, object> { {"Profile",currentProfile}});
             gridCategory.Rows.Clear();
             gridCategory.Refresh();
+
+            foreach (DataGridViewColumn col in gridCategory.Columns)
+            {
+                col.HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.HeaderCell.Style.Font = new Font("Arial", 12F, FontStyle.Bold, GraphicsUnit.Pixel);
+                col.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                col.DefaultCellStyle.Font = new Font("Arial", 12F, FontStyle.Regular, GraphicsUnit.Pixel);
+                col.DefaultCellStyle.ForeColor = Color.White;
+            }
+
             int cnt = 0;
             foreach (Category cat in categories)
             {
                 if (cat.desc == "") continue;
                 gridCategory.Rows.Add();
                 gridCategory.AutoGenerateColumns = true;
+                gridCategory.Rows[cnt].Cells[0].Style.ForeColor = MyColour.categories[cat.id % MyColour.categories.Length];
                 gridCategory.Rows[cnt].Cells[0].Value = cat.desc;
                 gridCategory.Rows[cnt].Cells[1].Value = cat.id;
                 cnt++;

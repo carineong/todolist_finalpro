@@ -87,6 +87,7 @@
     <Compile Include="CategoryForm.Designer.cs">
       <DependentUpon>CategoryForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyColour.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
