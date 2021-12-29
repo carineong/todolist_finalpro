@@ -174,7 +174,7 @@ namespace todolist_finalpro_framework
                 gridToDo.Rows[cnt].Cells[6].Value = todo.id;
                 cnt++;
             }
-
+            gridToDo.Focus();
         }
 
 
@@ -182,32 +182,24 @@ namespace todolist_finalpro_framework
         {
             currentStatus = -1;
             RefreshTable(InitCondition());
-            gridToDo.Focus();
-
         }
 
         private void btnPending_Click(object sender, EventArgs e)
         {
             currentStatus = 0;
             RefreshTable(InitCondition());
-            gridToDo.Focus();
-
         }
 
         private void btnInProgress_Click(object sender, EventArgs e)
         {
             currentStatus = 1;
             RefreshTable(InitCondition());
-            gridToDo.Focus();
-
         }
 
         private void btnCompleted_Click(object sender, EventArgs e)
         {
             currentStatus = 2;
             RefreshTable(InitCondition());
-            gridToDo.Focus();
-
         }
 
         // add new task to database
@@ -225,10 +217,9 @@ namespace todolist_finalpro_framework
             new_todo.end = datePickerEnd.Value;
             new_todo.status = 0;
             new_todo.profile = currentProfile;
+            new_todo.prior = 0;
             my_db.InsertNewToDo(sqlite_conn, new_todo);
             RefreshTable(InitCondition());
-            gridToDo.Focus();
-
         }
 
         // do something when selected date in calendar changed, i.e show ddl after selected date
@@ -269,14 +260,15 @@ namespace todolist_finalpro_framework
 
         private void buttonCategory_Click(object sender, EventArgs e)
         {
+            gridToDo.Focus();
             var f = new CategoryForm(my_db, sqlite_conn, currentProfile);
             f.ShowDialog();
             InitCategories();
             RefreshTable(InitCondition());
-            gridToDo.Focus();
 
         }
 
+<<<<<<< HEAD
         private void gridToDo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if(e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
@@ -302,6 +294,13 @@ namespace todolist_finalpro_framework
                 }
 
             }
+=======
+        private void buttonPomodoro_Click(object sender, EventArgs e)
+        {
+            gridToDo.Focus();
+            var f = new PomodoroForm(currentProfile);
+            f.ShowDialog();
+>>>>>>> 5474c192c2a2acf9a0b7618cc5bf925e37c50254
         }
 
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
