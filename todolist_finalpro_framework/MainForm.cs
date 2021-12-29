@@ -195,7 +195,7 @@ namespace todolist_finalpro_framework
                     }
                     else
                     {
-                        gridToDo.Rows[cnt].Cells[4].Value = "Overdue";
+                        gridToDo.Rows[cnt].Cells[4].Value = "exp";
                     }
                 }
                 else
@@ -237,7 +237,7 @@ namespace todolist_finalpro_framework
                     }
                     else
                     {
-                        gridToDo.Rows[cnt].Cells[4].Value = "Overdue";
+                        gridToDo.Rows[cnt].Cells[4].Value = "exp";
                     }
                 }
                 else
