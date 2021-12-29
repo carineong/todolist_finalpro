@@ -49,6 +49,7 @@ namespace todolist_finalpro_framework
                 gridCategory.Rows[cnt].Cells[1].Value = cat.id;
                 cnt++;
             }
+            gridCategory.Focus();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

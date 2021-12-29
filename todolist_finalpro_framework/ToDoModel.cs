@@ -16,6 +16,7 @@ namespace todolist_finalpro_framework
         public DateTime end;
         public int status;
         public int deleted;
+        public int prior;
     }
 
     public class ListToDo

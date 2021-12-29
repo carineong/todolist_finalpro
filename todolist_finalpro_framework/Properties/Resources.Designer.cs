@@ -73,6 +73,16 @@ namespace todolist_finalpro_framework.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap down {
+            get {
+                object obj = ResourceManager.GetObject("down", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Screenshot_2021_12_21_000355 {
             get {
                 object obj = ResourceManager.GetObject("Screenshot 2021-12-21 000355", resourceCulture);
@@ -86,6 +96,16 @@ namespace todolist_finalpro_framework.Properties {
         internal static System.Drawing.Bitmap Screenshot_2021_12_21_000557 {
             get {
                 object obj = ResourceManager.GetObject("Screenshot 2021-12-21 000557", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap up {
+            get {
+                object obj = ResourceManager.GetObject("up", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

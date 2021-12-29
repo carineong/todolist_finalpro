@@ -529,6 +529,7 @@ namespace todolist_finalpro_framework
             this.buttonPomodoro.TabIndex = 18;
             this.buttonPomodoro.TabStop = false;
             this.buttonPomodoro.Values.Text = "Pomodoro Timer";
+            this.buttonPomodoro.Click += new System.EventHandler(this.buttonPomodoro_Click);
             // 
             // MainForm
             // 
