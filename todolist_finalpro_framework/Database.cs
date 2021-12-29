@@ -11,6 +11,7 @@ namespace todolist_finalpro_framework
 {
     public class Database
     {
+        //建立数据库链接
         public SQLiteConnection CreateConnection(string db_name)
         {
 
@@ -29,12 +30,13 @@ namespace todolist_finalpro_framework
             return sqlite_conn;
         }
 
+        //查询数据库里是否已经有to_do表。若没有则建表
         public bool CreateTable(SQLiteConnection conn)
         {
             string cmd = "SELECT count(*) FROM sqlite_master WHERE type = 'table' AND name = 'to_do'";
-            SQLiteDataReader result = QueryCmd(conn, cmd);
             int RowCount = GetCount(conn, cmd);
-            if (RowCount > 0)
+
+            if (RowCount > 0)//已经有表了
             {
 
                 Debug.WriteLine($"{RowCount} Table Exists!");
@@ -42,7 +44,7 @@ namespace todolist_finalpro_framework
                 //ExecuteCommand(sqlite_cmd, Dropsql);
                 return false;
             }
-            else
+            else//表不存在。创to_do, category和profile表
             {
                 Debug.WriteLine("Table Not Found!");
                 string CreateTodo = $"CREATE TABLE to_do" +
@@ -73,6 +75,7 @@ namespace todolist_finalpro_framework
             }
         }
 
+        //执行非查询操作，如INSERT, UPDATE等等
         public void NonQueryCmd(SQLiteConnection conn, string cmd)
         {
             SQLiteCommand sqlite_cmd;
@@ -81,6 +84,7 @@ namespace todolist_finalpro_framework
             sqlite_cmd.ExecuteNonQuery();
         }
 
+        //执行查询操作，如SELECT
         public SQLiteDataReader QueryCmd(SQLiteConnection conn, string cmd)
         {
             SQLiteCommand sqlite_cmd;
@@ -90,6 +94,7 @@ namespace todolist_finalpro_framework
             return sqlite_datareader;
         }
 
+        //执行获取特定统计结果操作，如SELECT (*) COUNT
         public int GetCount(SQLiteConnection conn, string cmd)
         {
             SQLiteCommand sqlite_cmd;
@@ -97,28 +102,9 @@ namespace todolist_finalpro_framework
             sqlite_cmd.CommandText = cmd;
             return Convert.ToInt32(sqlite_cmd.ExecuteScalar());
         }
-       
-        //public Dictionary<string, int> GetCategoryID(SQLiteConnection conn)
-        //{
-            
-        //    string getCategories = "SELECT * FROM Category";
-        //    SQLiteDataReader datareader = QueryCmd(conn, getCategories);
 
-        //    Dictionary<string, int> categories = new Dictionary<string, int>();
-
-        //    while (datareader.Read())
-        //    {
-        //        categories.Add(Convert.ToString(datareader["Type"]), Convert.ToInt32(datareader["id"]));
-        //    }
-
-        //    datareader.Close();
-        //    return categories;
-        
-        //}
-
-
-        // Profile、Category及todo的增加数据操作
-        
+        /* 各表的INSERT操作*/
+        //增加新的大类Profile
         public void InsertProfile(SQLiteConnection conn, string[] cat)
         {
             SQLiteCommand sqlite_cmd;
@@ -134,6 +120,7 @@ namespace todolist_finalpro_framework
             }
         }
 
+        //在指定大类中增加分组Cateogry
         public void InsertCategory(SQLiteConnection conn, string[] cat, int[] profileID)
         {
             SQLiteCommand sqlite_cmd;
@@ -149,9 +136,9 @@ namespace todolist_finalpro_framework
             }
         }
 
+        //增加具体的待办事项to_do
         public void InsertNewToDo(SQLiteConnection conn, ToDoModel to_do)
         {
-
             string Insert_New = "INSERT INTO to_do " +
                                 "(Description, CategoryID, StartDate, EndDate, Status, ProfileID, Priority, Deleted) " +
                                 $"VALUES ('{to_do.desc}', '{to_do.category}', " +
@@ -159,18 +146,17 @@ namespace todolist_finalpro_framework
                                 $"'{to_do.end.ToString("yyyy-MM-dd")}', '{to_do.status}', '{to_do.profile}', 0, 0)";
 
             NonQueryCmd(conn, Insert_New);
-
         }
 
-        
 
-        
-        // Profile、Category及todo的查询操作
+
+        /*各表的查询操作*/
+        //可根据指定条件查询大类Profile
         public List<Profile> QueryProfile(SQLiteConnection conn, Dictionary<string, object> cond, int not_delete = 1)
         {
             string cmd = "SELECT * FROM Profile";
             int cond_num = 0;
-            foreach (var item in cond)
+            foreach (var item in cond) //遍历存放各条件的dict
             {
                 string key = item.Key;
                 var val = item.Value;
@@ -181,7 +167,7 @@ namespace todolist_finalpro_framework
 
                 switch (key)
                 {
-                    case "Type":
+                    case "Type": //大类名
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -189,10 +175,11 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" Type = {(string)val}";
                         break;
-              
+
                 }
             }
 
+            //取所有、或已删除、或未删除的项
             if (not_delete != 0)
             {
                 if (cond_num == 0)
@@ -213,12 +200,12 @@ namespace todolist_finalpro_framework
                     cmd += "1";
                 }
             }
-            cmd += " ORDER BY id";
+            cmd += " ORDER BY id"; //结果得根据id排序
             Debug.WriteLine(cmd);
             SQLiteDataReader datareader = QueryCmd(conn, cmd);
             List<Profile> cur = new List<Profile>();
 
-            while (datareader.Read())
+            while (datareader.Read()) //将结果用Profile类存起来
             {
                 Profile tmp = new Profile();
                 tmp.id = Convert.ToInt32(datareader["id"]);
@@ -231,11 +218,12 @@ namespace todolist_finalpro_framework
             return cur;
         }
 
+        //可根据指定条件查询分组Category
         public List<Category> QueryCategory(SQLiteConnection conn, Dictionary<string, object> cond, int not_delete = 1)
         {
             string cmd = "SELECT * FROM Category";
             int cond_num = 0;
-            foreach (var item in cond)
+            foreach (var item in cond) //遍历存放各条件的dict
             {
                 string key = item.Key;
                 var val = item.Value;
@@ -246,7 +234,7 @@ namespace todolist_finalpro_framework
 
                 switch (key)
                 {
-                    case "Profile":
+                    case "Profile": //取特定Profile的Category
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -254,7 +242,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" ProfileID = {(int)val}";
                         break;
-                    case "Type":
+                    case "Type": //取特定内容的Category
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -266,6 +254,7 @@ namespace todolist_finalpro_framework
                 }
             }
 
+            //取所有、或已删除、或未删除的项
             if (not_delete != 0)
             {
                 if (cond_num == 0)
@@ -286,12 +275,12 @@ namespace todolist_finalpro_framework
                     cmd += "1";
                 }
             }
-            cmd += " ORDER BY id";
+            cmd += " ORDER BY id";//结果得根据id排序
             Debug.WriteLine(cmd);
             SQLiteDataReader datareader = QueryCmd(conn, cmd);
             List<Category> cur = new List<Category>();
 
-            while (datareader.Read())
+            while (datareader.Read())//将结果用Category类存起来
             {
                 Category tmp = new Category();
                 tmp.id = Convert.ToInt32(datareader["id"]);
@@ -305,11 +294,12 @@ namespace todolist_finalpro_framework
             return cur;
         }
 
+        //可根据指定条件查询待办事项to_do
         public List<ToDoModel> QueryToDo(SQLiteConnection conn, Dictionary<string, object> cond, int not_delete = 1)
         {
             string cmd = "SELECT * FROM to_do";
             int cond_num = 0;
-            foreach (var item in cond)
+            foreach (var item in cond)//遍历存放各条件的dict
             {
                 string key = item.Key;
                 var val = item.Value;
@@ -320,7 +310,7 @@ namespace todolist_finalpro_framework
 
                 switch (key)
                 {
-                    case "Profile":
+                    case "Profile": //取特定Profile的to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -328,7 +318,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" ProfileID = {(int)val}";
                         break;
-                    case "CategoryID":
+                    case "CategoryID": //取特定Category的to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -336,7 +326,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" CategoryID = {(int)val}";
                         break;
-                    case "StartDate":
+                    case "StartDate": //取特定开始日期的to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -345,7 +335,7 @@ namespace todolist_finalpro_framework
                         List<DateTime> start_dt = (List<DateTime>)val;
                         cmd += $" DATE(StartDate) BETWEEN '{start_dt[0].ToString("yyyy-MM-dd")}' AND '{start_dt[1].ToString("yyyy-MM-dd")}'";
                         break;
-                    case "EndDate":
+                    case "EndDate": //取特定结束日期的to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -354,7 +344,7 @@ namespace todolist_finalpro_framework
                         List<DateTime> end_dt = (List<DateTime>)val;
                         cmd += $" DATE(EndDate) >= '{end_dt[0].ToString("yyyy-MM-dd")}' AND  '{end_dt[1].ToString("yyyy-MM-dd")}'";
                         break;
-                    case "Status":
+                    case "Status": //取特定状态的to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -362,7 +352,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" Status = '{val}'";
                         break;
-                    case "Priority":
+                    case "Priority": //根据优先级取to_do
                         if (cond_num >= 1)
                         {
                             cmd += " AND";
@@ -373,6 +363,7 @@ namespace todolist_finalpro_framework
                 }
             }
 
+            //取所有、或已删除、或未删除的项
             if (not_delete != 0)
             {
                 if (cond_num == 0)
@@ -393,13 +384,13 @@ namespace todolist_finalpro_framework
                     cmd += "1";
                 }
             }
-            cmd += " ORDER BY id";
+            cmd += " ORDER BY Priority, EndDate, id";//结果得先根据优先级、定下的完成日期、id排序
             Debug.WriteLine(cmd);
 
             SQLiteDataReader datareader = QueryCmd(conn, cmd);
             List<ToDoModel> cur = new List<ToDoModel>();
 
-            while (datareader.Read())
+            while (datareader.Read())//将结果用ToDoModel类存起来
             {
                 ToDoModel tmp = new ToDoModel();
                 tmp.id = Convert.ToInt32(datareader["id"]);
@@ -419,20 +410,20 @@ namespace todolist_finalpro_framework
             return cur;
         }
 
-
-        // Profile、Category及todo的更新操作
+        /*各表的更新操作*/
+        //ToDo的更新操作
         public void UpdateToDo(SQLiteConnection conn, Dictionary<string, object> cond, int id)
         {
-            string cmd = "UPDATE to_do SET";//times = @newtime WHERE en = @the_en AND cn = @the_cn;";
+            string cmd = "UPDATE to_do SET";
 
             int cond_num = 0;
-            foreach (var item in cond)
+            foreach (var item in cond)//遍历存放各条件的dict
             {
                 string key = item.Key;
                 var val = item.Value;
                 switch (key)
                 {
-                    case "Description":
+                    case "Description": //改内容
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -441,7 +432,7 @@ namespace todolist_finalpro_framework
                         cmd += $" Description = '{(string)val}'";
                         break;
 
-                    case "Status":
+                    case "Status": //改状态
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -450,7 +441,7 @@ namespace todolist_finalpro_framework
                         cmd += $" Status = {(int)val}";
                         break;
 
-                    case "CategoryID":
+                    case "CategoryID": //改Category
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -459,7 +450,7 @@ namespace todolist_finalpro_framework
                         cmd += $" CategoryID = {(int)val}";
                         break;
 
-                    case "StartDate":
+                    case "StartDate": //改开始时间
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -468,7 +459,7 @@ namespace todolist_finalpro_framework
                         cmd += $" StartDate = '{((DateTime)val).ToString("yyyy-MM-dd")}'";
                         break;
 
-                    case "EndDate":
+                    case "EndDate": //改预定的完成时间
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -476,7 +467,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" EndDate = '{((DateTime)val).ToString("yyyy-MM-dd")}'";
                         break;
-                    case "Deleted":
+                    case "Deleted": //删除或恢复
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -484,7 +475,7 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" Deleted = {(int)val}";
                         break;
-                    case "Priority":
+                    case "Priority": //改事项的优先级
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -500,18 +491,19 @@ namespace todolist_finalpro_framework
             return;
         }
 
+        // Profile或Category的更新操作
         public void UpdateProfile_Category(SQLiteConnection conn, string table, Dictionary<string, object> cond, int id)
         {
             string cmd = $"UPDATE {table} SET";
 
             int cond_num = 0;
-            foreach (var item in cond)
+            foreach (var item in cond)//遍历存放各条件的dict
             {
                 string key = item.Key;
                 var val = item.Value;
                 switch (key)
                 {
-                    case "Type":
+                    case "Type"://改内容
                         if (cond_num >= 1)
                         {
                             cmd += ",";
@@ -520,8 +512,8 @@ namespace todolist_finalpro_framework
                         cmd += $" Type = '{(string)val}'";
                         break;
 
-                    case "Profile":
-                        if(table != "Category")
+                    case "Profile"://若是Category表，可修改其对应的Profile
+                        if (table != "Category")
                         {
                             break;
                         }
@@ -533,7 +525,7 @@ namespace todolist_finalpro_framework
                         cmd += $" ProfileID = '{(int)val}'";
                         break;
 
-                    case "Deleted":
+                    case "Deleted": //删除会恢复
                         if (cond_num >= 1)
                         {
                             cmd += ",";
