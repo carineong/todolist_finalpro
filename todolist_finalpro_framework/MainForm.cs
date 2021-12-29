@@ -268,10 +268,9 @@ namespace todolist_finalpro_framework
 
         }
 
-<<<<<<< HEAD
         private void gridToDo_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
+            if (e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
             {
                 if (e.RowIndex == -1) return;
                 // 从 not priority 设置成 priority
@@ -294,13 +293,12 @@ namespace todolist_finalpro_framework
                 }
 
             }
-=======
+        }
         private void buttonPomodoro_Click(object sender, EventArgs e)
         {
             gridToDo.Focus();
             var f = new PomodoroForm(currentProfile);
             f.ShowDialog();
->>>>>>> 5474c192c2a2acf9a0b7618cc5bf925e37c50254
         }
 
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
