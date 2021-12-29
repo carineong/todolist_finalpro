@@ -49,10 +49,11 @@ namespace todolist_finalpro_framework
                     $"           (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     $"            Description TEXT NOT NULL," +
                     $"            CategoryID INT NOT NULL, " +
+                    $"            ProfileID INT NOT NULL," +
                     $"            StartDate TEXT NOT NULL, " +
                     $"            EndDate TEXT, " +
                     $"            Status INT NOT NULL," +
-                    $"            ProfileID INT NOT NULL," +
+                    $"            Priority INT NOT NULL," +
                     $"            Deleted INT NOT NULL)";
                 NonQueryCmd(conn, CreateTodo);
 
@@ -152,10 +153,10 @@ namespace todolist_finalpro_framework
         {
 
             string Insert_New = "INSERT INTO to_do " +
-                                "(Description, CategoryID, StartDate, EndDate, Status, ProfileID, Deleted) " +
+                                "(Description, CategoryID, StartDate, EndDate, Status, ProfileID, Priority, Deleted) " +
                                 $"VALUES ('{to_do.desc}', '{to_do.category}', " +
                                 $"'{to_do.start.ToString("yyyy-MM-dd")}', " +
-                                $"'{to_do.end.ToString("yyyy-MM-dd")}', '{to_do.status}', '{to_do.profile}', 0)";
+                                $"'{to_do.end.ToString("yyyy-MM-dd")}', '{to_do.status}', '{to_do.profile}', 0, 0)";
 
             NonQueryCmd(conn, Insert_New);
 
@@ -361,6 +362,14 @@ namespace todolist_finalpro_framework
                         cond_num++;
                         cmd += $" Status = '{val}'";
                         break;
+                    case "Priority":
+                        if (cond_num >= 1)
+                        {
+                            cmd += " AND";
+                        }
+                        cond_num++;
+                        cmd += $" Priority = {(int)val}";
+                        break;
                 }
             }
 
@@ -474,6 +483,14 @@ namespace todolist_finalpro_framework
                         }
                         cond_num++;
                         cmd += $" Deleted = {(int)val}";
+                        break;
+                    case "Priority":
+                        if (cond_num >= 1)
+                        {
+                            cmd += ",";
+                        }
+                        cond_num++;
+                        cmd += $" Priority = {(int)val}";
                         break;
                 }
             }

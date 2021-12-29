@@ -42,7 +42,7 @@ namespace todolist_finalpro_framework
         private void MainForm_Load(object sender, EventArgs e)
         {
             my_db = new Database();
-            sqlite_conn = my_db.CreateConnection("Bob3"); //数据库名字，若过后要实行user制度，可以每个user一个database
+            sqlite_conn = my_db.CreateConnection("Bob"); //数据库名字，若过后要实行user制度，可以每个user一个database
 
             QueryToDo = my_db.QueryToDo;
             QueryProfile = my_db.QueryProfile;
