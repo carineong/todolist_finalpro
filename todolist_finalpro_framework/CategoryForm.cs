@@ -19,6 +19,7 @@ namespace todolist_finalpro_framework
         public SQLiteConnection sqlite_conn;
         List<Category> categories = new List<Category> { };
         public Query<Category> QueryCategory;
+        public Query<ToDoModel> QueryToDo;
         public CategoryForm(Database db, SQLiteConnection sq, int p)
         {
             InitializeComponent();
@@ -29,6 +30,7 @@ namespace todolist_finalpro_framework
         private void CategoryForm_Load(object sender, EventArgs e)
         {
             QueryCategory = my_db.QueryCategory;
+            QueryToDo = my_db.QueryToDo;
             RefreshTable();
         }
 
@@ -40,6 +42,7 @@ namespace todolist_finalpro_framework
             int cnt = 0;
             foreach (Category cat in categories)
             {
+                if (cat.desc == "") continue;
                 gridCategory.Rows.Add();
                 gridCategory.AutoGenerateColumns = true;
                 gridCategory.Rows[cnt].Cells[0].Value = cat.desc;
@@ -80,6 +83,14 @@ namespace todolist_finalpro_framework
             int data_id = Convert.ToInt32(gridCategory[1, row_ind].Value);
             var cond = new Dictionary<string, object> { { "Profile", currentProfile }, { "Type", type }, { "Deleted", 1 } };
             my_db.UpdateProfile_Category(sqlite_conn, "Category", cond, data_id);
+
+            List<ToDoModel> catTaskList = new List<ToDoModel>();
+            catTaskList = QueryToDo(sqlite_conn, new Dictionary<string, object> { { "CategoryID", data_id } });
+            cond = new Dictionary<string, object> { { "CategoryID", 1 } };
+            foreach (ToDoModel todo in catTaskList)
+            {
+                my_db.UpdateToDo(sqlite_conn, cond, todo.id);
+            }
             RefreshTable();
         }
     }

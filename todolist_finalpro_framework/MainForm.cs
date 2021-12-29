@@ -20,7 +20,7 @@ namespace todolist_finalpro_framework
         public Database my_db;
         public SQLiteConnection sqlite_conn;
         public string[] preset_profiles = {"Study", "Personal", "Work", "Errands", "Others" };
-        public string[] preset_categories = {"All"};
+        public string[] preset_categories = {""};
         public string[] status = { "Pending", "In Progress", "Completed" };
 
         ListProfile profiles = new ListProfile();
@@ -42,7 +42,7 @@ namespace todolist_finalpro_framework
         private void MainForm_Load(object sender, EventArgs e)
         {
             my_db = new Database();
-            sqlite_conn = my_db.CreateConnection("Bob3"); //数据库名字，若过后要实行user制度，可以每个user一个database
+            sqlite_conn = my_db.CreateConnection("Bob4"); //数据库名字，若过后要实行user制度，可以每个user一个database
 
             QueryToDo = my_db.QueryToDo;
             QueryProfile = my_db.QueryProfile;
@@ -53,7 +53,7 @@ namespace todolist_finalpro_framework
             if (create_table)
             {
                 my_db.InsertProfile(sqlite_conn, preset_profiles);
-                //my_db.InsertCategory(sqlite_conn, preset_categories, Enumerable.Repeat<int>(1, preset_categories.Length).ToArray() );
+                my_db.InsertCategory(sqlite_conn, preset_categories, Enumerable.Repeat<int>(1, preset_categories.Length).ToArray() );
             }
             profiles.profiles = QueryProfile(sqlite_conn, new Dictionary<string, object> { });
 
@@ -92,7 +92,7 @@ namespace todolist_finalpro_framework
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Clear();
             foreach (var cat in categories.categories)
             {
-                if (cat.desc == "All") continue;
+                if (cat.desc == "") continue;
                 comboAddTask.Items.Add(cat.desc);
                 ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Add(cat.desc);
 
@@ -102,6 +102,7 @@ namespace todolist_finalpro_framework
             comboCategory.Items.Add("All");
             foreach (var cat in categories.categories)
             {
+                if (cat.desc == "") continue;
                 comboCategory.Items.Add(cat.desc);
 
             }
