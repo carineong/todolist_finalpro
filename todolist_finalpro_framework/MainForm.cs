@@ -20,8 +20,9 @@ namespace todolist_finalpro_framework
         public Database my_db;
         public SQLiteConnection sqlite_conn;
         public string[] preset_profiles = {"Study", "Personal", "Work", "Errands", "Others" };
-        public string[] preset_categories = {""};
+        public string[] preset_categories = {"None"};
         public string[] status = { "Pending", "In Progress", "Completed" };
+        public string[] priority_display = { "☆", "★" };
 
         ListProfile profiles = new ListProfile();
         ListCategory categories = new ListCategory();
@@ -76,14 +77,19 @@ namespace todolist_finalpro_framework
             }
             comboProfile.Text = profiles[1]; //不确定
 
-
+            
             InitCategories();
+            // gridview 设置一些特殊column的外表
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).Items.AddRange(status);
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnStatus"]).FlatStyle = FlatStyle.Flat;
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).FlatStyle = FlatStyle.Flat;
 
+           
+            // 这是为了设置button 中的星星， 尤其注意设置的font 和default 有关系，可以适当改 
+            ((DataGridViewButtonColumn)gridToDo.Columns["columnPriority"]).FlatStyle = FlatStyle.Popup;
 
-
+            ((DataGridViewButtonColumn)gridToDo.Columns["columnPriority"]).DefaultCellStyle.Font =
+                new Font("Times New Roman", gridToDo.DefaultCellStyle.Font.Size * 2, FontStyle.Regular);
             RefreshTable(InitCondition());
 
         }
@@ -93,6 +99,7 @@ namespace todolist_finalpro_framework
             comboAddTask.Items.Clear();
             comboCategory.Items.Clear();
             ((DataGridViewComboBoxColumn)gridToDo.Columns["columnCategory"]).Items.Clear();
+
             foreach (var cat in categories.categories)
             {
                 if (cat.desc == "") continue;
@@ -135,26 +142,36 @@ namespace todolist_finalpro_framework
             {
                 gridToDo.Rows.Add();
                 gridToDo.AutoGenerateColumns = true;
-                gridToDo.Rows[cnt].Cells[0].Value = todo.desc; 
-                gridToDo.Rows[cnt].Cells[1].Value = categories[todo.category]; 
-                gridToDo.Rows[cnt].Cells[2].Value = todo.end.ToString("yyyy-MM-dd");
+                if(todo.prior == 1)
+                {
+                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[1];
+                }
+                else
+                {
+                    gridToDo.Rows[cnt].Cells[0].Value = priority_display[0];
+                }
+                
+                gridToDo.Rows[cnt].Cells[1].Value = todo.desc; 
+                
+                gridToDo.Rows[cnt].Cells[2].Value = categories[todo.category]; 
+                gridToDo.Rows[cnt].Cells[3].Value = todo.end.ToString("yyyy-MM-dd");
                 if (todo.end < DateTime.Today)
                 {
                     if (todo.status == 2) // Completed
                     {
-                        gridToDo.Rows[cnt].Cells[3].Value = "0";
+                        gridToDo.Rows[cnt].Cells[4].Value = "0";
                     }
                     else
                     {
-                        gridToDo.Rows[cnt].Cells[3].Value = "Overdue";
+                        gridToDo.Rows[cnt].Cells[4].Value = "Overdue";
                     }
                 }
                 else
                 {
-                    gridToDo.Rows[cnt].Cells[3].Value = (todo.end - DateTime.Today).ToString("dd");
+                    gridToDo.Rows[cnt].Cells[4].Value = (todo.end - DateTime.Today).ToString("dd");
                 }
-                gridToDo.Rows[cnt].Cells[4].Value = status[todo.status];
-                gridToDo.Rows[cnt].Cells[5].Value = todo.id;
+                gridToDo.Rows[cnt].Cells[5].Value = status[todo.status];
+                gridToDo.Rows[cnt].Cells[6].Value = todo.id;
                 cnt++;
             }
 
@@ -243,7 +260,7 @@ namespace todolist_finalpro_framework
                 return;
             }
             int row_ind = gridToDo.CurrentCell.RowIndex;
-            int data_id = Convert.ToInt32(gridToDo[5, row_ind].Value);
+            int data_id = Convert.ToInt32(gridToDo[6, row_ind].Value);
             var cond = InitCondition();
             cond.Add("Deleted", 1);
             my_db.UpdateToDo(sqlite_conn, cond, data_id);
@@ -260,6 +277,33 @@ namespace todolist_finalpro_framework
 
         }
 
+        private void gridToDo_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if(e.ColumnIndex == gridToDo.Columns["columnPriority"].Index)
+            {
+                if (e.RowIndex == -1) return;
+                // 从 not priority 设置成 priority
+                if (gridToDo.Rows[e.RowIndex].Cells[0].Value.ToString() == priority_display[0])
+                {
+                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priority_display[1]; // display
+                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
+                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
+                    cond.Add("Priority", 1);
+                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                }
+                //从 priority 设置成 not priority
+                else
+                {
+                    gridToDo.Rows[e.RowIndex].Cells[0].Value = priority_display[0];
+                    var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
+                    int data_id = Convert.ToInt32(gridToDo[6, e.RowIndex].Value);
+                    cond.Add("Priority", 0);
+                    my_db.UpdateToDo(sqlite_conn, cond, data_id);
+                }
+
+            }
+        }
+
         private void comboCategory_SelectedValueChanged(object sender, EventArgs e)
         {
             currentCategory = comboCategory.Text == "All" ? -1 : categories[comboCategory.Text];
@@ -271,29 +315,25 @@ namespace todolist_finalpro_framework
         {
             int col_ind = gridToDo.CurrentCell.ColumnIndex;
             int row_ind = gridToDo.CurrentCell.RowIndex;
-            int data_id = Convert.ToInt32(gridToDo[5, row_ind].Value);
+            int data_id = Convert.ToInt32(gridToDo[6, row_ind].Value);
             var cond = new Dictionary<string, object> { { "Profile", currentProfile } };
 
             switch (col_ind)
             {
-                case 0:
-                    //string desc = Convert.ToString(gridToDo.Rows[row_ind].Cells[1].Value);
+                case 1:
                     var description = gridToDo[col_ind, row_ind].Value;
                     cond.Add("Description", Convert.ToString(description));
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     RefreshTable(InitCondition());
                     break;
-                case 1:
-                    //Debug.WriteLine(Convert.ToString(gridToDo[col_ind, row_ind].Value));
+                case 2:
                     string category = (Convert.ToString(gridToDo[col_ind, row_ind].Value));
-                    //int ind = Array.IndexOf(categories, category);
                     int ind = categories[category];
-                    //if (ind < 0) MessageBox.Show("Category does not exist!");
                     cond.Add("CategoryID", ind);
                     my_db.UpdateToDo(sqlite_conn, cond, data_id);
                     //RefreshTable(InitCondition());
                     break;
-                case 2:
+                case 3:
                     DateTime endDate;
                     try
                     {
@@ -308,7 +348,7 @@ namespace todolist_finalpro_framework
                         MessageBox.Show("Wrong end date format!");
                     }
                     break;
-                case 4:
+                case 5:
                     string stat = Convert.ToString(gridToDo[col_ind, row_ind].Value);
                     ind = Array.IndexOf(status, stat);
                     if (ind < 0) MessageBox.Show("Status does not exist!");

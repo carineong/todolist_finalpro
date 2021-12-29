@@ -405,7 +405,7 @@ namespace todolist_finalpro_framework
                 tmp.id = Convert.ToInt32(datareader["id"]);
                 tmp.desc = Convert.ToString(datareader["Description"]);
                 tmp.category = Convert.ToInt32(datareader["CategoryID"]);
-
+                tmp.prior = Convert.ToInt32(datareader["Priority"]);
                 tmp.profile = Convert.ToInt32(datareader["ProfileID"]);
                 tmp.start = DateTime.ParseExact(datareader["StartDate"].ToString(), "yyyy-MM-dd", null);
                 tmp.end = DateTime.ParseExact(datareader["EndDate"].ToString(), "yyyy-MM-dd", null);
