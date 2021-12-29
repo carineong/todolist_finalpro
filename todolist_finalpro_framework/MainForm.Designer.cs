@@ -36,6 +36,12 @@ namespace todolist_finalpro_framework
             this.formPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.monthCalendar = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.gridToDo = new System.Windows.Forms.DataGridView();
+            this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnStatus = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kryptonContextMenuSeparator1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
             this.kryptonContextMenuSeparator2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
             this.kryptonContextMenuHeading1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuHeading();
@@ -57,12 +63,7 @@ namespace todolist_finalpro_framework
             this.comboProfile = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
             this.buttonCategory = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             this.buttonDelete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
-            this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnStatus = new System.Windows.Forms.DataGridViewComboBoxColumn();
-            this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonPomodoro = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridToDo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboCategory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboAddTask)).BeginInit();
@@ -258,6 +259,55 @@ namespace todolist_finalpro_framework
             this.gridToDo.Size = new System.Drawing.Size(1131, 420);
             this.gridToDo.TabIndex = 1;
             this.gridToDo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridToDo_CellEndEdit);
+            // 
+            // columnDescription
+            // 
+            this.columnDescription.HeaderText = "Description";
+            this.columnDescription.MinimumWidth = 8;
+            this.columnDescription.Name = "columnDescription";
+            this.columnDescription.Width = 150;
+            // 
+            // columnCategory
+            // 
+            this.columnCategory.HeaderText = "Category";
+            this.columnCategory.MinimumWidth = 8;
+            this.columnCategory.Name = "columnCategory";
+            this.columnCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnCategory.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.columnCategory.Width = 150;
+            // 
+            // columnEndDate
+            // 
+            this.columnEndDate.HeaderText = "End Date";
+            this.columnEndDate.MinimumWidth = 8;
+            this.columnEndDate.Name = "columnEndDate";
+            this.columnEndDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnEndDate.Width = 150;
+            // 
+            // columnDayLeft
+            // 
+            this.columnDayLeft.HeaderText = "Day(s) Left";
+            this.columnDayLeft.MinimumWidth = 8;
+            this.columnDayLeft.Name = "columnDayLeft";
+            this.columnDayLeft.ReadOnly = true;
+            this.columnDayLeft.Width = 150;
+            // 
+            // columnStatus
+            // 
+            this.columnStatus.HeaderText = "Status";
+            this.columnStatus.MinimumWidth = 8;
+            this.columnStatus.Name = "columnStatus";
+            this.columnStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.columnStatus.Width = 150;
+            // 
+            // columnID
+            // 
+            this.columnID.HeaderText = "ID";
+            this.columnID.MinimumWidth = 8;
+            this.columnID.Name = "columnID";
+            this.columnID.Visible = false;
+            this.columnID.Width = 150;
             // 
             // kryptonContextMenuHeading1
             // 
@@ -468,54 +518,17 @@ namespace todolist_finalpro_framework
             this.buttonDelete.Values.Text = "Delete Selected?";
             this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
-            // columnDescription
+            // buttonPomodoro
             // 
-            this.columnDescription.HeaderText = "Description";
-            this.columnDescription.MinimumWidth = 8;
-            this.columnDescription.Name = "columnDescription";
-            this.columnDescription.Width = 150;
-            // 
-            // columnCategory
-            // 
-            this.columnCategory.HeaderText = "Category";
-            this.columnCategory.MinimumWidth = 8;
-            this.columnCategory.Name = "columnCategory";
-            this.columnCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.columnCategory.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.columnCategory.Width = 150;
-            // 
-            // columnEndDate
-            // 
-            this.columnEndDate.HeaderText = "End Date";
-            this.columnEndDate.MinimumWidth = 8;
-            this.columnEndDate.Name = "columnEndDate";
-            this.columnEndDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.columnEndDate.Width = 150;
-            // 
-            // columnDayLeft
-            // 
-            this.columnDayLeft.HeaderText = "Day(s) Left";
-            this.columnDayLeft.MinimumWidth = 8;
-            this.columnDayLeft.Name = "columnDayLeft";
-            this.columnDayLeft.ReadOnly = true;
-            this.columnDayLeft.Width = 150;
-            // 
-            // columnStatus
-            // 
-            this.columnStatus.HeaderText = "Status";
-            this.columnStatus.MinimumWidth = 8;
-            this.columnStatus.Name = "columnStatus";
-            this.columnStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.columnStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.columnStatus.Width = 150;
-            // 
-            // columnID
-            // 
-            this.columnID.HeaderText = "ID";
-            this.columnID.MinimumWidth = 8;
-            this.columnID.Name = "columnID";
-            this.columnID.Visible = false;
-            this.columnID.Width = 150;
+            this.buttonPomodoro.Location = new System.Drawing.Point(1031, 15);
+            this.buttonPomodoro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonPomodoro.Name = "buttonPomodoro";
+            this.buttonPomodoro.Palette = this.formPalette;
+            this.buttonPomodoro.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.buttonPomodoro.Size = new System.Drawing.Size(167, 44);
+            this.buttonPomodoro.TabIndex = 18;
+            this.buttonPomodoro.TabStop = false;
+            this.buttonPomodoro.Values.Text = "Pomodoro Timer";
             // 
             // MainForm
             // 
@@ -523,6 +536,7 @@ namespace todolist_finalpro_framework
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
             this.ClientSize = new System.Drawing.Size(1547, 622);
+            this.Controls.Add(this.buttonPomodoro);
             this.Controls.Add(this.buttonDelete);
             this.Controls.Add(this.buttonCategory);
             this.Controls.Add(this.comboProfile);
@@ -584,6 +598,7 @@ namespace todolist_finalpro_framework
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDayLeft;
         private System.Windows.Forms.DataGridViewComboBoxColumn columnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnID;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton buttonPomodoro;
     }
 }
 
