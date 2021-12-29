@@ -30,17 +30,18 @@ namespace todolist_finalpro_framework
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.formPalette = new ComponentFactory.Krypton.Toolkit.KryptonPalette(this.components);
             this.monthCalendar = new ComponentFactory.Krypton.Toolkit.KryptonMonthCalendar();
             this.gridToDo = new System.Windows.Forms.DataGridView();
+            this.columnPriority = new System.Windows.Forms.DataGridViewButtonColumn();
             this.columnDescription = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnCategory = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnCategory = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.columnEndDate = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.columnDayLeft = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.columnStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.columnStatus = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.columnID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.kryptonContextMenuSeparator1 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
             this.kryptonContextMenuSeparator2 = new ComponentFactory.Krypton.Toolkit.KryptonContextMenuSeparator();
@@ -61,8 +62,9 @@ namespace todolist_finalpro_framework
             this.txtAddTask = new ComponentFactory.Krypton.Toolkit.KryptonTextBox();
             this.groupBoxNewTask = new System.Windows.Forms.GroupBox();
             this.comboProfile = new ComponentFactory.Krypton.Toolkit.KryptonComboBox();
-            this.buttonDelete = new System.Windows.Forms.Button();
-            this.buttonSetting = new System.Windows.Forms.Button();
+            this.buttonCategory = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.buttonDelete = new ComponentFactory.Krypton.Toolkit.KryptonButton();
+            this.buttonPomodoro = new ComponentFactory.Krypton.Toolkit.KryptonButton();
             ((System.ComponentModel.ISupportInitialize)(this.gridToDo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboCategory)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.comboAddTask)).BeginInit();
@@ -214,63 +216,76 @@ namespace todolist_finalpro_framework
             this.gridToDo.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
             this.gridToDo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.gridToDo.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridToDo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridToDo.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.gridToDo.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridToDo.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.columnPriority,
             this.columnDescription,
             this.columnCategory,
             this.columnEndDate,
             this.columnDayLeft,
             this.columnStatus,
             this.columnID});
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gridToDo.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gridToDo.DefaultCellStyle = dataGridViewCellStyle2;
             this.gridToDo.GridColor = System.Drawing.Color.White;
             this.gridToDo.Location = new System.Drawing.Point(403, 70);
             this.gridToDo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.gridToDo.Name = "gridToDo";
             this.gridToDo.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridToDo.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(130)))), ((int)(((byte)(163)))));
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridToDo.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.gridToDo.RowHeadersVisible = false;
             this.gridToDo.RowHeadersWidth = 62;
             this.gridToDo.RowTemplate.Height = 28;
             this.gridToDo.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.gridToDo.Size = new System.Drawing.Size(1131, 420);
+            this.gridToDo.Size = new System.Drawing.Size(1208, 428);
             this.gridToDo.TabIndex = 1;
+            this.gridToDo.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridToDo_CellClick);
             this.gridToDo.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.gridToDo_CellEndEdit);
+            // 
+            // columnPriority
+            // 
+            this.columnPriority.HeaderText = "Priority";
+            this.columnPriority.MinimumWidth = 8;
+            this.columnPriority.Name = "columnPriority";
+            this.columnPriority.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.columnPriority.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.columnPriority.Width = 50;
             // 
             // columnDescription
             // 
             this.columnDescription.HeaderText = "Description";
             this.columnDescription.MinimumWidth = 8;
             this.columnDescription.Name = "columnDescription";
-            this.columnDescription.Width = 150;
+            this.columnDescription.Width = 250;
             // 
             // columnCategory
             // 
             this.columnCategory.HeaderText = "Category";
             this.columnCategory.MinimumWidth = 8;
             this.columnCategory.Name = "columnCategory";
+            this.columnCategory.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnCategory.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.columnCategory.Width = 150;
             // 
             // columnEndDate
@@ -278,21 +293,24 @@ namespace todolist_finalpro_framework
             this.columnEndDate.HeaderText = "End Date";
             this.columnEndDate.MinimumWidth = 8;
             this.columnEndDate.Name = "columnEndDate";
+            this.columnEndDate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.columnEndDate.Width = 150;
             // 
             // columnDayLeft
             // 
-            this.columnDayLeft.HeaderText = "Day Left";
+            this.columnDayLeft.HeaderText = "Day(s)";
             this.columnDayLeft.MinimumWidth = 8;
             this.columnDayLeft.Name = "columnDayLeft";
             this.columnDayLeft.ReadOnly = true;
-            this.columnDayLeft.Width = 150;
+            this.columnDayLeft.Width = 50;
             // 
             // columnStatus
             // 
             this.columnStatus.HeaderText = "Status";
             this.columnStatus.MinimumWidth = 8;
             this.columnStatus.Name = "columnStatus";
+            this.columnStatus.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.columnStatus.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.columnStatus.Width = 150;
             // 
             // columnID
@@ -300,7 +318,6 @@ namespace todolist_finalpro_framework
             this.columnID.HeaderText = "ID";
             this.columnID.MinimumWidth = 8;
             this.columnID.Name = "columnID";
-            this.columnID.ReadOnly = true;
             this.columnID.Visible = false;
             this.columnID.Width = 150;
             // 
@@ -384,17 +401,17 @@ namespace todolist_finalpro_framework
             // datePickerEnd
             // 
             this.datePickerEnd.CalendarTodayDate = new System.DateTime(2021, 12, 20, 0, 0, 0, 0);
-            this.datePickerEnd.Location = new System.Drawing.Point(959, 59);
+            this.datePickerEnd.Location = new System.Drawing.Point(958, 59);
             this.datePickerEnd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.datePickerEnd.Name = "datePickerEnd";
             this.datePickerEnd.Palette = this.formPalette;
             this.datePickerEnd.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.datePickerEnd.Size = new System.Drawing.Size(301, 30);
+            this.datePickerEnd.Size = new System.Drawing.Size(302, 30);
             this.datePickerEnd.TabIndex = 3;
             // 
             // btnEnterTask
             // 
-            this.btnEnterTask.Location = new System.Drawing.Point(1380, 47);
+            this.btnEnterTask.Location = new System.Drawing.Point(1465, 47);
             this.btnEnterTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEnterTask.Name = "btnEnterTask";
             this.btnEnterTask.Size = new System.Drawing.Size(98, 42);
@@ -430,7 +447,7 @@ namespace todolist_finalpro_framework
             this.labelCat.AutoSize = true;
             this.labelCat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
             this.labelCat.ForeColor = System.Drawing.Color.White;
-            this.labelCat.Location = new System.Drawing.Point(589, 22);
+            this.labelCat.Location = new System.Drawing.Point(590, 22);
             this.labelCat.Name = "labelCat";
             this.labelCat.Size = new System.Drawing.Size(92, 25);
             this.labelCat.TabIndex = 8;
@@ -454,8 +471,9 @@ namespace todolist_finalpro_framework
             this.txtAddTask.Name = "txtAddTask";
             this.txtAddTask.Palette = this.formPalette;
             this.txtAddTask.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
-            this.txtAddTask.Size = new System.Drawing.Size(504, 31);
+            this.txtAddTask.Size = new System.Drawing.Size(504, 32);
             this.txtAddTask.TabIndex = 0;
+            this.txtAddTask.Text = "type in description here...";
             // 
             // groupBoxNewTask
             // 
@@ -466,9 +484,11 @@ namespace todolist_finalpro_framework
             this.groupBoxNewTask.Controls.Add(this.labelEndDate);
             this.groupBoxNewTask.Controls.Add(this.datePickerEnd);
             this.groupBoxNewTask.Controls.Add(this.btnEnterTask);
-            this.groupBoxNewTask.Location = new System.Drawing.Point(24, 508);
+            this.groupBoxNewTask.Location = new System.Drawing.Point(24, 524);
+            this.groupBoxNewTask.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBoxNewTask.Name = "groupBoxNewTask";
-            this.groupBoxNewTask.Size = new System.Drawing.Size(1510, 110);
+            this.groupBoxNewTask.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBoxNewTask.Size = new System.Drawing.Size(1584, 110);
             this.groupBoxNewTask.TabIndex = 14;
             this.groupBoxNewTask.TabStop = false;
             // 
@@ -485,34 +505,54 @@ namespace todolist_finalpro_framework
             this.comboProfile.Text = "Select Profile";
             this.comboProfile.SelectedValueChanged += new System.EventHandler(this.comboProfile_SelectedValueChanged);
             // 
+            // buttonCategory
+            // 
+            this.buttonCategory.Location = new System.Drawing.Point(1268, 11);
+            this.buttonCategory.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonCategory.Name = "buttonCategory";
+            this.buttonCategory.Palette = this.formPalette;
+            this.buttonCategory.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.buttonCategory.Size = new System.Drawing.Size(167, 44);
+            this.buttonCategory.TabIndex = 16;
+            this.buttonCategory.TabStop = false;
+            this.buttonCategory.Values.Text = " Manage Category";
+            this.buttonCategory.Click += new System.EventHandler(this.buttonCategory_Click);
+            // 
             // buttonDelete
             // 
-            this.buttonDelete.Location = new System.Drawing.Point(1364, 26);
+            this.buttonDelete.Location = new System.Drawing.Point(1441, 11);
             this.buttonDelete.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.buttonDelete.Name = "buttonDelete";
-            this.buttonDelete.Size = new System.Drawing.Size(170, 31);
-            this.buttonDelete.TabIndex = 16;
-            this.buttonDelete.Text = "Delete Selected?";
-            this.buttonDelete.UseVisualStyleBackColor = true;
+            this.buttonDelete.Palette = this.formPalette;
+            this.buttonDelete.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.buttonDelete.Size = new System.Drawing.Size(167, 44);
+            this.buttonDelete.TabIndex = 17;
+            this.buttonDelete.TabStop = false;
+            this.buttonDelete.Values.Text = "Delete Selected?";
+            this.buttonDelete.Click += new System.EventHandler(this.buttonDelete_Click);
             // 
-            // buttonSetting
+            // buttonPomodoro
             // 
-            this.buttonSetting.Location = new System.Drawing.Point(1188, 26);
-            this.buttonSetting.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.buttonSetting.Name = "buttonSetting";
-            this.buttonSetting.Size = new System.Drawing.Size(170, 31);
-            this.buttonSetting.TabIndex = 17;
-            this.buttonSetting.Text = "Manage Categories";
-            this.buttonSetting.UseVisualStyleBackColor = true;
+            this.buttonPomodoro.Location = new System.Drawing.Point(1095, 11);
+            this.buttonPomodoro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.buttonPomodoro.Name = "buttonPomodoro";
+            this.buttonPomodoro.Palette = this.formPalette;
+            this.buttonPomodoro.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
+            this.buttonPomodoro.Size = new System.Drawing.Size(167, 44);
+            this.buttonPomodoro.TabIndex = 18;
+            this.buttonPomodoro.TabStop = false;
+            this.buttonPomodoro.Values.Text = "Pomodoro Timer";
+            this.buttonPomodoro.Click += new System.EventHandler(this.buttonPomodoro_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(2)))), ((int)(((byte)(14)))), ((int)(((byte)(53)))));
-            this.ClientSize = new System.Drawing.Size(1547, 623);
-            this.Controls.Add(this.buttonSetting);
+            this.ClientSize = new System.Drawing.Size(1637, 642);
+            this.Controls.Add(this.buttonPomodoro);
             this.Controls.Add(this.buttonDelete);
+            this.Controls.Add(this.buttonCategory);
             this.Controls.Add(this.comboProfile);
             this.Controls.Add(this.btnAll);
             this.Controls.Add(this.groupBoxNewTask);
@@ -524,10 +564,13 @@ namespace todolist_finalpro_framework
             this.Controls.Add(this.monthCalendar);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
             this.Palette = this.formPalette;
             this.PaletteMode = ComponentFactory.Krypton.Toolkit.PaletteMode.Custom;
             this.ShowIcon = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "To-do list";
             this.Load += new System.EventHandler(this.MainForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.gridToDo)).EndInit();
@@ -564,14 +607,16 @@ namespace todolist_finalpro_framework
         private ComponentFactory.Krypton.Toolkit.KryptonTextBox txtAddTask;
         private System.Windows.Forms.GroupBox groupBoxNewTask;
         private ComponentFactory.Krypton.Toolkit.KryptonComboBox comboProfile;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton buttonCategory;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton buttonDelete;
+        private ComponentFactory.Krypton.Toolkit.KryptonButton buttonPomodoro;
+        private System.Windows.Forms.DataGridViewButtonColumn columnPriority;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDescription;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnCategory;
+        private System.Windows.Forms.DataGridViewComboBoxColumn columnCategory;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnEndDate;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnDayLeft;
-        private System.Windows.Forms.DataGridViewTextBoxColumn columnStatus;
+        private System.Windows.Forms.DataGridViewComboBoxColumn columnStatus;
         private System.Windows.Forms.DataGridViewTextBoxColumn columnID;
-        private System.Windows.Forms.Button buttonDelete;
-        private System.Windows.Forms.Button buttonSetting;
     }
 }
 
