@@ -22,7 +22,8 @@ namespace todolist_finalpro_framework
             
             get {
                 var cat = categories.Find(x => (x.id == i));
-                    return cat.desc; 
+                if (cat == null) return "";
+                return cat.desc; 
             }
             //set { 
             //    var cat = categories.Find(x => (x.id == i));
@@ -36,6 +37,7 @@ namespace todolist_finalpro_framework
             get
             {
                 var cat = categories.Find(x => (x.desc == i));
+                if (cat == null) return 0;
                 return cat.id;
             }
             //set

@@ -99,6 +99,7 @@ namespace todolist_finalpro_framework
             }
             comboAddTask.Text = "";
 
+            comboCategory.Items.Add("All");
             foreach (var cat in categories.categories)
             {
                 comboCategory.Items.Add(cat.desc);
@@ -132,8 +133,22 @@ namespace todolist_finalpro_framework
                 gridToDo.AutoGenerateColumns = true;
                 gridToDo.Rows[cnt].Cells[0].Value = todo.desc; 
                 gridToDo.Rows[cnt].Cells[1].Value = categories[todo.category]; 
-                gridToDo.Rows[cnt].Cells[2].Value = todo.end.ToString("yyyy-MM-dd"); 
-                gridToDo.Rows[cnt].Cells[3].Value = (todo.end - DateTime.Today).ToString("dd"); 
+                gridToDo.Rows[cnt].Cells[2].Value = todo.end.ToString("yyyy-MM-dd");
+                if (todo.end < DateTime.Today)
+                {
+                    if (todo.status == 2) // Completed
+                    {
+                        gridToDo.Rows[cnt].Cells[3].Value = "0";
+                    }
+                    else
+                    {
+                        gridToDo.Rows[cnt].Cells[3].Value = "Overdue";
+                    }
+                }
+                else
+                {
+                    gridToDo.Rows[cnt].Cells[3].Value = (todo.end - DateTime.Today).ToString("dd");
+                }
                 gridToDo.Rows[cnt].Cells[4].Value = status[todo.status];
                 gridToDo.Rows[cnt].Cells[5].Value = todo.id;
                 cnt++;
