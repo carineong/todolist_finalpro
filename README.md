@@ -21,7 +21,4 @@ There are five profiles for this app:
 
 User can manage each profile or add/delete a particular category by clicking 'Manage Category'.
 
-### By:
-1. Carine Ong Wei Fang
-2. Eugene Yu Jun Hao
-3. Sherie Low Wenn Lynn
+### Completed By: Carine, Eugene, Sherie
