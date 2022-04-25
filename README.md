@@ -21,4 +21,4 @@ There are five profiles for this app:
 
 User can manage each profile or add/delete a particular category by clicking 'Manage Category'.
 
-### Completed By: Carine, Eugene, Sherie
+#### Completed By: Carine, Eugene, Sherie
